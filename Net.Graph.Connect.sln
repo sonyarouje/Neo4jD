@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net.Graph.Neo4JD", "Net.Graph.Neo4JD\Net.Graph.Neo4JD.csproj", "{4C71F6FB-427C-4071-A049-99E10F755354}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Neo4jClient", "Test.Neo4JD\Test.Neo4jClient.csproj", "{C946BEE2-0265-4143-A29B-DAA55CA89524}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C71F6FB-427C-4071-A049-99E10F755354}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C71F6FB-427C-4071-A049-99E10F755354}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C71F6FB-427C-4071-A049-99E10F755354}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C71F6FB-427C-4071-A049-99E10F755354}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C946BEE2-0265-4143-A29B-DAA55CA89524}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C946BEE2-0265-4143-A29B-DAA55CA89524}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C946BEE2-0265-4143-A29B-DAA55CA89524}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C946BEE2-0265-4143-A29B-DAA55CA89524}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
