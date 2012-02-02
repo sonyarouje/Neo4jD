@@ -29,8 +29,8 @@ namespace Test.Neo4jClient
             Console.WriteLine(node.GetLocation().ToString());
 
             Node mother = new Node();
-            mother.SetProperty("FirstName", "Marry");
-            mother.SetProperty("LastName", "Treassa");
+            mother.SetProperty("FirstName", "Marry").SetProperty("LastName", "Treassa").Create();
+            mother.SetProperty("FirstName", "Viji").SetProperty("LastName", "P").Create();
             mother.Create();
             Assert.IsNotNull(mother.GetLocation());
             Console.WriteLine(mother.GetLocation().ToString());
