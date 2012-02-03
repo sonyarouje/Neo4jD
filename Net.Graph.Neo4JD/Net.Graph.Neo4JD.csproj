@@ -62,8 +62,9 @@
     <Compile Include="Node.cs" />
     <Compile Include="JsonParser\ParserBase.cs" />
     <Compile Include="JsonParser\RelationshipParser.cs" />
-    <Compile Include="Persistance\NodeDB.cs" />
-    <Compile Include="Persistance\RelationShipDB.cs" />
+    <Compile Include="Persistance\NodeRepo.cs" />
+    <Compile Include="Persistance\RelationShipRepo.cs" />
+    <Compile Include="Persistance\Repository.cs" />
     <Compile Include="Persistance\UriHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Relationship.cs" />

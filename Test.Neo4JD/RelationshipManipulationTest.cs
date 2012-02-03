@@ -37,6 +37,15 @@ namespace Test.Neo4jClient
         }
 
         [TestCase]
+        public void UpdateRelationship()
+        {
+            Relationship relationShip = Relationship.Get(5);
+            relationShip.SetProperty("Name", "New prop");
+
+            Relationship updatedRelationShip = Relationship.Get(5);
+            Assert.AreEqual("New prop", updatedRelationShip.GetProperty("Name"));
+        }
+        [TestCase]
         public void TryDeleteAnInvalidRelationship()
         {
             

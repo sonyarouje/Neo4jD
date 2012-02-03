@@ -5,12 +5,10 @@ using System.Text;
 using Net.Graph.Neo4JD;
 namespace Net.Graph.Neo4JD.Persistance
 {
-    public class RelationShipDB
+    public class RelationShipRepo:Repository
     {
-        private readonly GraphRequest _graphRequest;
-        public RelationShipDB()
+        public RelationShipRepo()
         {
-            _graphRequest = new GraphRequest();
         }
         public Relationship GetRelationship(string relationShipId)
         {
@@ -27,9 +25,5 @@ namespace Net.Graph.Neo4JD.Persistance
             return relationShip;
         }
 
-        public void Delete(Relationship relationShipToDelete)
-        {
-            _graphRequest.Post(RequestType.DELETE, relationShipToDelete.GetLocation(), null);
-        }
     }
 }

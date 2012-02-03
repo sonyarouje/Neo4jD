@@ -32,7 +32,7 @@ namespace Net.Graph.Neo4JD.JsonParser
             foreach (var t in token)
             {
                 string[] s = t.ToString().Replace("\"", "").Split(":".ToCharArray());
-                this._keyValuePair.Add(s[0], s[1]);
+                this._keyValuePair.Add(s[0].Trim(), s[1].Trim());
             }
             entity.SetLocation(new Uri(jobject["self"].ToString()));
         }
@@ -47,5 +47,6 @@ namespace Net.Graph.Neo4JD.JsonParser
             return props.ToString();
         }
 
+        
     }
 }

@@ -13,12 +13,13 @@ namespace Net.Graph.Neo4JD
         private string _type;
         private string _startNodePath = string.Empty;
         private string _endNodePath = string.Empty;
-        private RelationShipDB _relationshipDb;
-        NodeDB _nodeDb;
+        private RelationShipRepo _relationshipRepo;
+        private NodeRepo _nodeRepo;
         private Relationship()
         {
-            _relationshipDb = new RelationShipDB();
-            _nodeDb = new NodeDB();
+            _relationshipRepo = new RelationShipRepo();
+            _nodeRepo = new NodeRepo();
+            base.SetRepository(_relationshipRepo);
         }
         
         internal Relationship(Node startNode, Node endNode, string relationShipType):this()
@@ -35,7 +36,7 @@ namespace Net.Graph.Neo4JD
 
         public static Relationship Get(int relationshipID)
         {
-            Persistance.RelationShipDB db = new RelationShipDB();
+            Persistance.RelationShipRepo db = new RelationShipRepo();
             return db.GetRelationship(relationshipID.ToString());
         }
 
@@ -43,7 +44,7 @@ namespace Net.Graph.Neo4JD
         {
             if (this.GetLocation() == null)
                 throw new NullReferenceException("Location is null. The relationship might not be valid, get a valid relation from the db.");
-            _relationshipDb.Delete(this);
+            _relationshipRepo.Delete(this);
         }
 
         internal void SetVertices(string startNodePath, string endNodePath)
@@ -54,12 +55,12 @@ namespace Net.Graph.Neo4JD
 
         public Node StartNode()
         {
-            return _nodeDb.GetNode(new Uri(_startNodePath));
+            return _nodeRepo.GetNode(new Uri(_startNodePath));
         }
 
         public Node EndNode()
         {
-            return _nodeDb.GetNode(new Uri(_endNodePath));
+            return _nodeRepo.GetNode(new Uri(_endNodePath));
         }
 
         public override string GetProperties()

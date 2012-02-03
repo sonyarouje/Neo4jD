@@ -21,16 +21,16 @@ namespace Test.Neo4jClient
         public void CreateNode()
         {
             Node node = new Node();
-            node.SetProperty("FirstName", "Kunjachan");
-            node.SetProperty("LastName", "Arouje");
+            node.AddProperty("FirstName", "Kunjachan");
+            node.AddProperty("LastName", "Arouje");
             node.Create();
 
             Assert.IsNotNull(node.GetLocation());
             Console.WriteLine(node.GetLocation().ToString());
 
             Node mother = new Node();
-            mother.SetProperty("FirstName", "Marry").SetProperty("LastName", "Treassa").Create();
-            mother.SetProperty("FirstName", "Viji").SetProperty("LastName", "P").Create();
+            mother.AddProperty("FirstName", "Marry").AddProperty("LastName", "Treassa").Create();
+            mother.AddProperty("FirstName", "Viji").AddProperty("LastName", "P").Create();
             mother.Create();
             Assert.IsNotNull(mother.GetLocation());
             Console.WriteLine(mother.GetLocation().ToString());
@@ -47,6 +47,26 @@ namespace Test.Neo4jClient
         }
 
         [TestCase]
+        public void SetProperty()
+        {
+            Node mother = Node.Get(20);
+            mother.SetProperty("Profession", "Teacher");
+
+            Node motherWithProf = Node.Get(20);
+            Assert.AreEqual("Teacher", motherWithProf.GetProperty("Profession"));
+        }
+
+        [TestCase]
+        public void UpdateProperty()
+        {
+            Node mother = Node.Get(20);
+            mother.UpdateProperties("Profession", "Ast Head Mistress");
+
+            Node motherWithUpdatedProf = Node.Get(20);
+            Assert.AreEqual("Ast Head Mistress", motherWithUpdatedProf.GetProperty("Profession"));
+        }
+
+        [TestCase]
         [ExpectedException(typeof(NodeNotFoundException))]
         public void GetUnknownNodeExceptionTest()
         {
@@ -57,7 +77,7 @@ namespace Test.Neo4jClient
         public void DeleteNode()
         {
             Node nodeToDelete = new Node();
-            nodeToDelete.SetProperty("FirstName", "Delete").SetProperty("LastName", "Node");
+            nodeToDelete.AddProperty("FirstName", "Delete").AddProperty("LastName", "Node");
             nodeToDelete.Create();
             int id = nodeToDelete.Id;
             Console.WriteLine(nodeToDelete.GetLocation().ToString());

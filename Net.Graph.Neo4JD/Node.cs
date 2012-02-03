@@ -9,12 +9,13 @@ namespace Net.Graph.Neo4JD
 {
     public class Node:BaseEntity
     {
-        Persistance.NodeDB _db;
-        Persistance.RelationShipDB _relationShipDb;
+        Persistance.NodeRepo _nodeRepo;
+        Persistance.RelationShipRepo _relationShipRepo;
         public Node()
         {
-            _db = new Persistance.NodeDB();
-            _relationShipDb = new Persistance.RelationShipDB();
+            _nodeRepo = new Persistance.NodeRepo();
+            _relationShipRepo = new Persistance.RelationShipRepo();
+            base.SetRepository(_nodeRepo);
         }
 
         public Node(RequestResult result):this()
@@ -26,7 +27,7 @@ namespace Net.Graph.Neo4JD
         {
             try
             {
-                Persistance.NodeDB db = new Persistance.NodeDB();
+                Persistance.NodeRepo db = new Persistance.NodeRepo();
                 return db.GetNode(id.ToString());
             }
             catch (System.Net.WebException ex)
@@ -35,9 +36,15 @@ namespace Net.Graph.Neo4JD
             }
         }
 
+        public override BaseEntity SetProperty(string propertyName, string propertyValue)
+        {
+            base.AddProperty(propertyName, propertyValue);
+            return _nodeRepo.SetProperty(this, propertyName);
+        }
+
         public override BaseEntity Create()
         {
-            return _db.CreateNode(this);
+            return _nodeRepo.CreateNode(this);
         }
 
         public override void Delete()
@@ -45,7 +52,7 @@ namespace Net.Graph.Neo4JD
             if (this.GetLocation() == null || this.Id <= 0)
                 throw new Exceptions.InvalidNodeException();
 
-            _db.DeleteNode(this);
+            _nodeRepo.Delete(this);
         }
         internal void SetResult(RequestResult result)
         {
@@ -59,7 +66,7 @@ namespace Net.Graph.Neo4JD
                 throw new Exception("Parent or child node is not created. Create both node before creating the relation");
             
             Relationship relationShip = new Relationship(this, node, relationShipType);
-            return _relationShipDb.CreateRelationship(this, relationShip);
+            return _relationShipRepo.CreateRelationship(this, relationShip);
         }
 
         public IList<Node> In()
@@ -77,7 +84,7 @@ namespace Net.Graph.Neo4JD
             if (this.GetLocation() == null || this.Id <= 0)
                 throw new Exceptions.InvalidNodeException();
 
-            RequestResult result = _db.GetRelatedNodes(this, direction);
+            RequestResult result = _nodeRepo.GetRelatedNodes(this, direction);
 
             IList<Node> childs = new List<Node>();
             JArray array = JArray.Parse(result.GetResponseData());
@@ -85,7 +92,7 @@ namespace Net.Graph.Neo4JD
             {
                 Node node = new Node();
                 node.SetLocation(new Uri(tkn[element].ToString()));
-                node = _db.GetNode(node);
+                node = _nodeRepo.GetNode(node);
                 childs.Add(node);
             }
             return childs;

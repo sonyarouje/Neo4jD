@@ -11,7 +11,7 @@ namespace Net.Graph.Neo4JD.Exceptions
         {
             get
             {
-                return "Location is null. Get a valid node from db before deleting.";
+                return "Location is null. Get a valid Node/Relationship from db to perform this operation.";
             }
         }
     }
