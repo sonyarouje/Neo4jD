@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Net.Graph.Neo4JD.Germlin.Pipes
+namespace Net.Graph.Neo4JD.Traversal.Germlin.Pipes
 {
-    public class InPipe:Pipe
+    public class OutPipe:Pipe
     {
-        public InPipe(string value)
+        public OutPipe(string value)
         {
-            base.SetPipeName("in");
+            base.SetPipeName("out");
             base.SetPipeValue(value);
         }
     }

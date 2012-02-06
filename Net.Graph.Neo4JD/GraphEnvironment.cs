@@ -15,6 +15,8 @@ namespace Net.Graph.Neo4JD
 
         public static Uri GetBaseUri()
         {
+            if (_baseUri == null)
+                throw new NullReferenceException("The base URI is not set. Set base Uri using GraphEnvironment.SetBaseUri()");
             return _baseUri;
         }
     }

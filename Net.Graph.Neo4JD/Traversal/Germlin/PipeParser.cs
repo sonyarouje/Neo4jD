@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Net.Graph.Neo4JD.Germlin
+namespace Net.Graph.Neo4JD.Traversal.Germlin
 {
     public class PipeParser
     {

@@ -44,5 +44,11 @@ namespace Net.Graph.Neo4JD.Persistance
             return result;
         }
 
+        public RequestResult GetRestTraversalResult(Node node, string query)
+        {
+            var uri = UriHelper.ConcatUri(node.GetLocation(), "/traverse/node");
+            var result = _graphRequest.Post(RequestType.POST, uri, query);
+            return result;
+        }
     }
 }

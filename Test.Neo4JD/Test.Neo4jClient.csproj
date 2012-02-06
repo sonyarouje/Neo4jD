@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.0.6.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.core">
       <HintPath>C:\Program Files\NUnit 2.5.10\bin\net-2.0\lib\nunit.core.dll</HintPath>
     </Reference>
@@ -47,10 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataFormatTest.cs" />
     <Compile Include="GermlinLanguageTest.cs" />
     <Compile Include="NodeManipulationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelationshipManipulationTest.cs" />
+    <Compile Include="RESTApi_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Net.Graph.Neo4JD\Net.Graph.Neo4JD.csproj">

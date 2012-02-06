@@ -30,8 +30,6 @@ namespace Test.Neo4jClient
 
             Node mother = new Node();
             mother.AddProperty("FirstName", "Marry").AddProperty("LastName", "Treassa").Create();
-            mother.AddProperty("FirstName", "Viji").AddProperty("LastName", "P").Create();
-            mother.Create();
             Assert.IsNotNull(mother.GetLocation());
             Console.WriteLine(mother.GetLocation().ToString());
         }
@@ -138,5 +136,6 @@ namespace Test.Neo4jClient
             foreach (Node node in relations)
                 Console.WriteLine(node.Id.ToString());
         }
+
     }
 }

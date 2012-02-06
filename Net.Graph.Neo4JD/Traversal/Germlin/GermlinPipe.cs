@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Net.Graph.Neo4JD.Germlin.Pipes;
-namespace Net.Graph.Neo4JD.Germlin
+using Net.Graph.Neo4JD.Traversal.Germlin.Pipes;
+namespace Net.Graph.Neo4JD.Traversal.Germlin
 {
-    public class GermlinPipe
+    public class GermlinPipe:INeo4jQuery
     {
         IList<Pipes.Pipe> _pipes = null;
 

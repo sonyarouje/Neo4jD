@@ -5,6 +5,7 @@ using System.Text;
 using System.Dynamic;
 using Newtonsoft.Json.Linq;
 using Net.Graph.Neo4JD.Persistance;
+using Net.Graph.Neo4JD.Traversal;
 namespace Net.Graph.Neo4JD
 {
     public class Node:BaseEntity
@@ -79,6 +80,11 @@ namespace Net.Graph.Neo4JD
             return this.GetRelationshipNodes("out","end");
         }
 
+        public IList<Node> Filter(INeo4jQuery query)
+        {
+            RequestResult result= _nodeRepo.GetRestTraversalResult(this, query.ToString());
+            return CreateNodeArray("self",result);
+        }
         private IList<Node> GetRelationshipNodes(string direction, string element)
         {
             if (this.GetLocation() == null || this.Id <= 0)
@@ -86,6 +92,11 @@ namespace Net.Graph.Neo4JD
 
             RequestResult result = _nodeRepo.GetRelatedNodes(this, direction);
 
+            return CreateNodeArray(element, result);
+        }
+
+        private IList<Node> CreateNodeArray(string element, RequestResult result)
+        {
             IList<Node> childs = new List<Node>();
             JArray array = JArray.Parse(result.GetResponseData());
             foreach (var tkn in array)
