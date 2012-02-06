@@ -9,6 +9,7 @@ namespace Net.Graph.Neo4JD.Traversal.Rest
     public class RestAPI:INeo4jQuery
     {
         IList<RestBasePipe> _restPipes;
+        private RelationShipFilter _relationShipFilter;
         public RestAPI()
         {
             _restPipes = new List<RestBasePipe>();
@@ -30,14 +31,15 @@ namespace Net.Graph.Neo4JD.Traversal.Rest
             return this.Add(new Filter(filter));
         }
 
-        //public RestPipe FilterExt(FilterPipeExt filter)
-        //{
-        //    return this.Add(filter);
-        //}
-
-        public RestAPI RelationShips(RelationShip relationShips)
+        public RestAPI RelationShips(RelationshipDirection relationShipDirection, string relationShipType)
         {
-            return this.Add(relationShips);
+            if (_relationShipFilter == null)
+            {
+                _relationShipFilter = new RelationShipFilter();
+                this.Add(_relationShipFilter);
+            }
+            _relationShipFilter.Add(new RelationFilter(relationShipDirection,relationShipType));
+            return this;
         }
 
         public RestAPI Uniqueness(UniquenessType uniqueness)

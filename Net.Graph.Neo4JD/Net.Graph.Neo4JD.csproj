@@ -77,7 +77,7 @@
     <Compile Include="Traversal\Rest\Pipes\Order.cs" />
     <Compile Include="Traversal\Rest\Pipes\PropertyFilter.cs" />
     <Compile Include="Traversal\Rest\Pipes\RelationFilter.cs" />
-    <Compile Include="Traversal\Rest\Pipes\RelationShip.cs" />
+    <Compile Include="Traversal\Rest\Pipes\RelationShipFilter.cs" />
     <Compile Include="Traversal\Rest\Pipes\RestBasePipe.cs" />
     <Compile Include="Traversal\Rest\Pipes\Uniqueness.cs" />
     <Compile Include="Traversal\Rest\RestAPI.cs" />

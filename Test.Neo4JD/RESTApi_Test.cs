@@ -60,12 +60,8 @@ namespace Test.Neo4jClient
                 (
                     new PropertyFilter().SetPropertyName("FirstName").Contains("sony")
                 )
-                .RelationShips
-                (
-                    new RelationShip()
-                        .Add(new RelationFilter(RelationshipDirection.out_direction, "wife"))
-                        .Add(new RelationFilter(RelationshipDirection.all_direction, "loves"))
-                )
+                .RelationShips(RelationshipDirection.out_direction,"wife")
+                .RelationShips(RelationshipDirection.all_direction,"loves")
                 .Uniqueness(UniquenessType.node_global)
                 .MaxDepth(2)
                 .ToString();
@@ -86,12 +82,8 @@ namespace Test.Neo4jClient
                 (
                     new PropertyFilter().SetPropertyName("FirstName").Contains("marry")
                 )
-                .RelationShips
-                (
-                    new RelationShip()
-                        .Add(new RelationFilter(RelationshipDirection.out_direction, "wife"))
-                        .Add(new RelationFilter(RelationshipDirection.all_direction, "loves"))
-                )
+                .RelationShips(RelationshipDirection.out_direction, "wife")
+                .RelationShips(RelationshipDirection.all_direction, "loves")
                 .Uniqueness(UniquenessType.node_global)
                 .MaxDepth(2);
             IList<Node> nodes = node.Filter(r);

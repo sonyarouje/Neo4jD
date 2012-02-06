@@ -5,21 +5,21 @@ using System.Text;
 using Newtonsoft.Json.Linq;
 namespace Net.Graph.Neo4JD.Traversal.Rest.Pipes
 {
-    public class RelationShip:RestBasePipe
+    public class RelationShipFilter:RestBasePipe
     {
         private IList<RestBasePipe> _relationShips;
 
-        public RelationShip()
+        public RelationShipFilter()
         {
             _relationShips = new List<RestBasePipe>();
         }
 
-        public RelationShip(List<RelationFilter> relationFilters):this()
+        public RelationShipFilter(List<RelationFilter> relationFilters):this()
         {
             _relationShips = (IList<RestBasePipe>)relationFilters;
         }
 
-        public RelationShip Add(RelationFilter relationFilter)
+        public RelationShipFilter Add(RelationFilter relationFilter)
         {
             _relationShips.Add(relationFilter);
             return this;
