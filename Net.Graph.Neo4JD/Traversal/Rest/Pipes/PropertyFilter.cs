@@ -34,9 +34,12 @@ namespace Net.Graph.Neo4JD.Traversal.Rest.Pipes
         internal object GetJsonObject()
         {
             JObject returnFilter = new JObject();
-            string filter = string.Format("position.endNode().getProperty('{0}').toLowerCase().{1}('{2}')",_propertyName,_selectCriteria,_propertyValue);
-            returnFilter.Add ("body", new JValue(filter));
+            string filter = string.Format("position.endNode().getProperty('{0}').toLowerCase().{1}('{2}')", _propertyName, _selectCriteria, _propertyValue);
+            returnFilter.Add("body", new JValue(filter));
             returnFilter.Add("language", new JValue("javascript"));
+            //"language":"builtin","name":"all"
+            //returnFilter.Add("language", new JValue("builtin"));
+            //returnFilter.Add("name", new JValue("all"));
             return returnFilter;
         }
     }

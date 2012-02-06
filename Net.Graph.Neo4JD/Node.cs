@@ -85,6 +85,7 @@ namespace Net.Graph.Neo4JD
             RequestResult result= _nodeRepo.GetRestTraversalResult(this, query.ToString());
             return CreateNodeArray("self",result);
         }
+
         private IList<Node> GetRelationshipNodes(string direction, string element)
         {
             if (this.GetLocation() == null || this.Id <= 0)

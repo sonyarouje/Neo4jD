@@ -84,7 +84,7 @@ namespace Test.Neo4jClient
             r.Order(OrderType.breadth_first)
                 .Filter
                 (
-                    new PropertyFilter().SetPropertyName("FirstName").Contains("m")
+                    new PropertyFilter().SetPropertyName("FirstName").Contains("marry")
                 )
                 .RelationShips
                 (

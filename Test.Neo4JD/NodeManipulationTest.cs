@@ -48,10 +48,12 @@ namespace Test.Neo4jClient
         public void SetProperty()
         {
             Node mother = Node.Get(20);
-            mother.SetProperty("Profession", "Teacher");
+            Assert.AreEqual("Marry", mother.GetProperty("FirstName"));
+            //mother.SetProperty("FirstName", "Marry");
+            //mother.SetProperty("SecondName", "Tressa");
 
             Node motherWithProf = Node.Get(20);
-            Assert.AreEqual("Teacher", motherWithProf.GetProperty("Profession"));
+            Assert.AreEqual("Marry", motherWithProf.GetProperty("FirstName"));
         }
 
         [TestCase]
