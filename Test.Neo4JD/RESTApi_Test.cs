@@ -54,7 +54,7 @@ namespace Test.Neo4jClient
         [TestCase]
         public void RestAPIFormatTest()
         {
-            RestAPI r = new RestAPI();
+            RestTraversal r = new RestTraversal();
             string qry = r.Order(OrderType.breadth_first)
                 .Filter
                 (
@@ -76,12 +76,9 @@ namespace Test.Neo4jClient
         {
             Node node = Node.Get(19);
             Assert.IsNotNull(node);
-            RestAPI r = new RestAPI();
+            RestTraversal r = new RestTraversal();
             r.Order(OrderType.breadth_first)
-                .Filter
-                (
-                    new PropertyFilter().SetPropertyName("FirstName").Contains("marry")
-                )
+                .Filter ( new PropertyFilter().SetPropertyName("FirstName").Contains("marry") )
                 .RelationShips(RelationshipDirection.out_direction, "wife")
                 .RelationShips(RelationshipDirection.all_direction, "loves")
                 .Uniqueness(UniquenessType.node_global)
