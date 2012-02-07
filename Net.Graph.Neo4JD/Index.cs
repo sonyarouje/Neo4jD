@@ -30,7 +30,7 @@ namespace Net.Graph.Neo4JD
         //    return indexRepoTmp.GetAutoIndex();
         //}
 
-        public static Index GetIndex(string indexName)
+        public static Index Get(string indexName)
         {
             IndexRepo indexRepoTmp = new IndexRepo();
             return indexRepoTmp.GetIndex(indexName);

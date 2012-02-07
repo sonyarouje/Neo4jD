@@ -27,7 +27,7 @@ namespace Test.Neo4jClient
         [TestCase]
         public void Create_A_FavouriteIndex_And_AddNode()
         {
-            Index fav = Index.GetIndex("favaourites");
+            Index fav = Index.Get("favaourites");
             Node node = Node.Get(1);
             fav.Add(node, "FirstName", "dad");
 
@@ -38,7 +38,7 @@ namespace Test.Neo4jClient
         [TestCase]
         public void Remove_Node_FromIndex()
         {
-            Index fav = Index.GetIndex("favaourites");
+            Index fav = Index.Get("favaourites");
             Node node = Node.Get(1);
             fav.RemoveNode(node);
         }
@@ -46,7 +46,7 @@ namespace Test.Neo4jClient
         [TestCase]
         public void Search_Index()
         {
-            Index fav = Index.GetIndex("favaourites");
+            Index fav = Index.Get("favaourites");
             IndexQuery qry = new IndexQuery();
             qry.GetKey("FirstName").StartsWith("mo").OR().GetKey("FirstName").StartsWith("dad");
             IList<Node> nodes= fav.Search(qry);
