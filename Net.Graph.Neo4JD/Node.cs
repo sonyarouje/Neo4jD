@@ -37,6 +37,12 @@ namespace Net.Graph.Neo4JD
             }
         }
 
+        public static Node Get(string location)
+        {
+            Persistance.NodeRepo db = new Persistance.NodeRepo();
+            return db.GetNode(new Uri(location));
+        }
+
         public override BaseEntity SetProperty(string propertyName, string propertyValue)
         {
             base.AddProperty(propertyName, propertyValue);

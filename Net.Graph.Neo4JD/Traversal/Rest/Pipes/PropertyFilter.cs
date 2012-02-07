@@ -10,6 +10,7 @@ namespace Net.Graph.Neo4JD.Traversal.Rest.Pipes
         private string _propertyName=string.Empty;
         private string _propertyValue = string.Empty;
         private string _selectCriteria = string.Empty;
+        private string _userDefinedBody = string.Empty;
 
         public PropertyFilter SetPropertyName(string propertyName)
         {
@@ -24,6 +25,12 @@ namespace Net.Graph.Neo4JD.Traversal.Rest.Pipes
             return this;
         }
 
+        public PropertyFilter UserDefinedFilter(string filter)
+        {
+            _userDefinedBody = filter;
+            return this;
+        }
+
         public PropertyFilter Equals(string propertyValue)
         {
             _propertyValue = propertyValue;
@@ -34,12 +41,10 @@ namespace Net.Graph.Neo4JD.Traversal.Rest.Pipes
         internal object GetJsonObject()
         {
             JObject returnFilter = new JObject();
-            string filter = string.Format("position.endNode().getProperty('{0}').toLowerCase().{1}('{2}')", _propertyName, _selectCriteria, _propertyValue);
+            string filter = string.IsNullOrEmpty(_userDefinedBody)==false?_userDefinedBody:string.Format("position.endNode().getProperty('{0}').toLowerCase().{1}('{2}')", _propertyName, _selectCriteria, _propertyValue);
             returnFilter.Add("body", new JValue(filter));
             returnFilter.Add("language", new JValue("javascript"));
-            //"language":"builtin","name":"all"
-            //returnFilter.Add("language", new JValue("builtin"));
-            //returnFilter.Add("name", new JValue("all"));
+
             return returnFilter;
         }
     }

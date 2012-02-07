@@ -56,10 +56,7 @@ namespace Test.Neo4jClient
         {
             RestTraversal r = new RestTraversal();
             string qry = r.Order(OrderType.breadth_first)
-                .Filter
-                (
-                    new PropertyFilter().SetPropertyName("FirstName").Contains("sony")
-                )
+                .Filter(new PropertyFilter().SetPropertyName("FirstName").Contains("sony"))
                 .RelationShips(RelationshipDirection.out_direction,"wife")
                 .RelationShips(RelationshipDirection.all_direction,"loves")
                 .Uniqueness(UniquenessType.node_global)
@@ -78,7 +75,7 @@ namespace Test.Neo4jClient
             Assert.IsNotNull(node);
             RestTraversal r = new RestTraversal();
             r.Order(OrderType.breadth_first)
-                .Filter ( new PropertyFilter().SetPropertyName("FirstName").Contains("marry") )
+                .Filter(new PropertyFilter().SetPropertyName("FirstName").Contains("marry"))
                 .RelationShips(RelationshipDirection.out_direction, "wife")
                 .RelationShips(RelationshipDirection.all_direction, "loves")
                 .Uniqueness(UniquenessType.node_global)

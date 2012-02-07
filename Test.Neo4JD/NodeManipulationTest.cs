@@ -37,32 +37,32 @@ namespace Test.Neo4jClient
         [TestCase]
         public void GetNodes()
         {
-            Node mother = Node.Get(20);
-            Assert.AreEqual(20,mother.Id);
+            Node mother = Node.Get(2);
+            Assert.AreEqual(2,mother.Id);
 
-            Node father = Node.Get(19);
-            Assert.AreEqual(19, father.Id);
+            Node father = Node.Get(1);
+            Assert.AreEqual(1, father.Id);
         }
 
         [TestCase]
         public void SetProperty()
         {
-            Node mother = Node.Get(20);
+            Node mother = Node.Get(2);
             Assert.AreEqual("Marry", mother.GetProperty("FirstName"));
             //mother.SetProperty("FirstName", "Marry");
             //mother.SetProperty("SecondName", "Tressa");
 
-            Node motherWithProf = Node.Get(20);
+            Node motherWithProf = Node.Get(2);
             Assert.AreEqual("Marry", motherWithProf.GetProperty("FirstName"));
         }
 
         [TestCase]
         public void UpdateProperty()
         {
-            Node mother = Node.Get(20);
+            Node mother = Node.Get(2);
             mother.UpdateProperties("Profession", "Ast Head Mistress");
 
-            Node motherWithUpdatedProf = Node.Get(20);
+            Node motherWithUpdatedProf = Node.Get(2);
             Assert.AreEqual("Ast Head Mistress", motherWithUpdatedProf.GetProperty("Profession"));
         }
 
@@ -92,7 +92,7 @@ namespace Test.Neo4jClient
         [ExpectedException (typeof(NodeDeleteException))]
         public void DeleteNodeThatHasRelationship()
         {
-            Node node = Node.Get(19);
+            Node node = Node.Get(1);
             node.Delete();
         }
 
@@ -107,10 +107,10 @@ namespace Test.Neo4jClient
         [TestCase]
         public void CreateRelationship()
         {
-            Node mother = Node.Get(20);
+            Node mother = Node.Get(2);
             Console.WriteLine(mother.GetLocation().ToString());
 
-            Node father = Node.Get(19);
+            Node father = Node.Get(1);
             Assert.IsNotNull(father);
             Assert.IsNotNull(father.GetLocation());
             Console.WriteLine(father.GetLocation().ToString());
@@ -122,9 +122,9 @@ namespace Test.Neo4jClient
         [TestCase]
         public void RelationShipFromThisNode()
         {
-            Node father = Node.Get(19);
+            Node father = Node.Get(1);
             IList<Node> relations = father.Out();
-            Assert.AreEqual(2, relations.Count);
+            Assert.AreEqual(1, relations.Count);
             foreach(Node node in relations)
                 Console.WriteLine(node.Id.ToString());
         }
@@ -132,9 +132,9 @@ namespace Test.Neo4jClient
         [TestCase]
         public void RelationShipToThisNode()
         {
-            Node mother = Node.Get(20);
+            Node mother = Node.Get(2);
             IList<Node> relations = mother.In();
-            Assert.AreEqual(2, relations.Count);
+            Assert.AreEqual(1, relations.Count);
             foreach (Node node in relations)
                 Console.WriteLine(node.Id.ToString());
         }

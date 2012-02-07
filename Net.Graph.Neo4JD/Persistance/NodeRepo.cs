@@ -7,6 +7,7 @@ namespace Net.Graph.Neo4JD.Persistance
 {
     public class NodeRepo:Repository
     {
+
         public Node GetNode(Uri nodeUri)
         {
             Node node = new Node();

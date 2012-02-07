@@ -7,9 +7,7 @@ using Net.Graph.Neo4JD;
 namespace Net.Graph.Neo4JD.Persistance
 {
     public class GraphRequest
-    {
-        private Uri _uriToRequest;
-        
+    {       
         public RequestResult Post(string method, Uri uri, string properties)
         {
             if (uri == null) throw new ArgumentNullException("uri should not be null");
@@ -21,8 +19,6 @@ namespace Net.Graph.Neo4JD.Persistance
             RequestResult result = new RequestResult(response);
             return result;
         }
-
-
 
         private void AddBody(HttpWebRequest request, string nodeData)
         {

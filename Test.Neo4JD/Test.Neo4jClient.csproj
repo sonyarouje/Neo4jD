@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="DataFormatTest.cs" />
     <Compile Include="GermlinLanguageTest.cs" />
+    <Compile Include="IndexTest.cs" />
     <Compile Include="NodeManipulationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelationshipManipulationTest.cs" />
