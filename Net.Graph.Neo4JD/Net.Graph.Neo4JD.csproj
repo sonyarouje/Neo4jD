@@ -53,10 +53,15 @@
     <Compile Include="Persistance\IndexRepo.cs" />
     <Compile Include="Traversal\Germlin\GermlinPipe.cs" />
     <Compile Include="Traversal\Germlin\PipeParser.cs" />
+    <Compile Include="Traversal\Germlin\Pipes\BothPipe.cs" />
     <Compile Include="Traversal\Germlin\Pipes\FilterPipe.cs" />
     <Compile Include="Traversal\Germlin\Pipes\GraphPipe.cs" />
+    <Compile Include="Traversal\Germlin\Pipes\InEdgesPipe.cs" />
     <Compile Include="Traversal\Germlin\Pipes\InPipe.cs" />
+    <Compile Include="Traversal\Germlin\Pipes\InVPipe.cs" />
+    <Compile Include="Traversal\Germlin\Pipes\OutEdgesPipe.cs" />
     <Compile Include="Traversal\Germlin\Pipes\OutPipe.cs" />
+    <Compile Include="Traversal\Germlin\Pipes\OutVPipe.cs" />
     <Compile Include="Traversal\Germlin\Pipes\Pipe.cs" />
     <Compile Include="Traversal\Germlin\Pipes\PropertyPipe.cs" />
     <Compile Include="Traversal\Germlin\Pipes\VerticesPipe.cs" />

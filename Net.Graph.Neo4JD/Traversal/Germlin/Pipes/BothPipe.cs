@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Net.Graph.Neo4JD.Traversal.Germlin.Pipes
 {
-    public class VerticesPipe:Pipe
+    public class BothPipe:Pipe
     {
-        public VerticesPipe()
+        public BothPipe(string label)
         {
-            base.SetPipeName("v");
-            base.SetPipeValue("#id");
+            base.SetPipeName("both");
+            base.SetPipeValue(label);
         }
     }
 }

@@ -4,19 +4,40 @@ using System.Linq;
 using System.Text;
 using NUnit.Core;
 using NUnit.Framework;
+using Net.Graph.Neo4JD;
 using Net.Graph.Neo4JD.Traversal.Germlin;
+using Newtonsoft.Json.Linq;
 namespace Test.Neo4jClient
 {
     [TestFixture]
     public class GermlinLanguageTest
     {
+        [SetUp]
+        public void Initialize()
+        {
+            GraphEnvironment.SetBaseUri("http://localhost:7474/");
+        }
+
         [TestCase]
         public void BasicGermlinParse()
         {
             GermlinPipe germlinPipe=new GermlinPipe();
-            string parsedString = germlinPipe.G().V(30).Out("sony").In("arouje").Filter("FName", new Net.Graph.Neo4JD.Traversal.Germlin.Pipes.FilterPipe("Kevin")).ToString();
+            string parsedString = germlinPipe.G.V.Out("knows").In("family").Filter("FName", new Net.Graph.Neo4JD.Traversal.Germlin.Pipes.FilterPipe("Kevin")).ToString();
+            JObject jobject =new JObject();
+            jobject.Add("script", new JValue("g.v(#id).out('knows').in('family').filter{it.FName=='Kevin'}"));
+            Assert.AreEqual(jobject.ToString(), parsedString);
 
-            Assert.AreEqual("g.V(30).out('sony').in('arouje').filter{it.FName=='Kevin'}", parsedString);
+        }
+
+        [TestCase]
+        public void GetOutNodes()
+        {
+            GermlinPipe germ = new GermlinPipe();
+            germ.G.V.Out("son");
+            Console.WriteLine(germ.ToString());
+            Node father = Node.Get(1);
+            IList<Node> nodes = father.Filter(germ);
+            Assert.AreEqual(1, nodes.Count);
         }
     }
 }

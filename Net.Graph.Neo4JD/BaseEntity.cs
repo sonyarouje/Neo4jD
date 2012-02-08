@@ -87,7 +87,7 @@ namespace Net.Graph.Neo4JD
 
         }
 
-        internal void SetLocation(Uri location)
+        internal virtual void SetLocation(Uri location)
         {
             _location = location;
         }

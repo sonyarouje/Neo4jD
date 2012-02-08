@@ -20,14 +20,19 @@ namespace Net.Graph.Neo4JD.Traversal.Germlin
             return this;
         }
 
-        public GermlinPipe G()
+        public GermlinPipe G
         {
-            return this.Add(new GraphPipe());
+            get { return this.Add(new GraphPipe()); }
         }
 
-        public GermlinPipe V(int id)
+        public GermlinPipe V
         {
-            return this.Add(new VerticesPipe(id));
+            get { return this.Add(new VerticesPipe()); }
+        }
+
+        public GermlinPipe Out()
+        {
+            return this.Add(new OutPipe());
         }
 
         public GermlinPipe Out(string label)
@@ -35,9 +40,27 @@ namespace Net.Graph.Neo4JD.Traversal.Germlin
             return this.Add(new OutPipe(label));
         }
 
+        public GermlinPipe OutV()
+        {
+            return this.Add(new OutVPipe());
+        }
+
+        public GermlinPipe OutE()
+        {
+            return this.Add(new OutEdgesPipe());
+        }
+        public GermlinPipe OutE(string label)
+        {
+            return this.Add(new OutEdgesPipe(label));
+        }
+
         public GermlinPipe In(string label)
         {
             return this.Add(new InPipe(label));
+        }
+        public GermlinPipe InV()
+        {
+            return this.Add(new InVPipe());
         }
 
         public GermlinPipe Filter(string property, FilterPipe filter)

@@ -36,7 +36,7 @@ namespace Net.Graph.Neo4JD.Persistance
             Index index = new Index();
             index.SetLocation(UriHelper.ConcatUri(GraphEnvironment.GetBaseUri(), "db/data/index/node/" + indexName));
             var response = _graphRequest.Post(RequestType.POST, UriHelper.ConcatUri(GraphEnvironment.GetBaseUri(),"db/data/index/node/") , indexNameJson.ToString());
-            Console.WriteLine(response.GetResponseData());
+            //Console.WriteLine(response.GetResponseData());
             return index;
         }
 

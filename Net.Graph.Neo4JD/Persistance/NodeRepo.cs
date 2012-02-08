@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json.Linq;
 using Net.Graph.Neo4JD;
 namespace Net.Graph.Neo4JD.Persistance
 {
@@ -45,12 +46,34 @@ namespace Net.Graph.Neo4JD.Persistance
             return result;
         }
 
-        public RequestResult GetRestTraversalResult(Node node, string query)
+        public RequestResult GetRestExecutionResult(Node node, string query)
         {
-            Console.WriteLine(query);
+            //Console.WriteLine(query);
             var uri = UriHelper.ConcatUri(node.GetLocation(), "/traverse/node");
             var result = _graphRequest.Post(RequestType.POST, uri, query);
             return result;
+        }
+
+        public RequestResult GetGermlinExecutionResult(Node node, string query)
+        {
+            query = query.Replace("#id", node.Id.ToString());
+            var uri = UriHelper.ConcatUri(GraphEnvironment.GetBaseUri(), "db/data/ext/GremlinPlugin/graphdb/execute_script");
+            var result = _graphRequest.Post(RequestType.POST, uri, query);
+            return result;
+        }
+
+        public IList<Node> CreateNodeArray(string element, RequestResult result)
+        {
+            IList<Node> childs = new List<Node>();
+            JArray array = JArray.Parse(result.GetResponseData());
+            foreach (var tkn in array)
+            {
+                Node node = new Node();
+                node.SetLocation(new Uri(tkn[element].ToString()));
+                node = this.GetNode(node);
+                childs.Add(node);
+            }
+            return childs;
         }
     }
 }

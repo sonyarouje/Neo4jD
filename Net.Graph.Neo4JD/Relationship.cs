@@ -40,6 +40,14 @@ namespace Net.Graph.Neo4JD
             return db.GetRelationship(relationshipID.ToString());
         }
 
+        internal override void SetLocation(Uri location)
+        {
+            if (location.ToString().Contains("node"))
+                throw new InvalidCastException(string.Format("Unable to cast Node to Relationship. The type is a Node, Location: {0}", location.ToString()));
+
+            base.SetLocation(location);
+        }
+
         public override void Delete()
         {
             if (this.GetLocation() == null)

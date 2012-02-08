@@ -5,16 +5,16 @@ using System.Text;
 
 namespace Net.Graph.Neo4JD.Traversal.Germlin.Pipes
 {
-    public class OutPipe:Pipe
+    public class OutEdgesPipe:Pipe
     {
-        public OutPipe(string value):this()
+        public OutEdgesPipe(string label):this()
         {
-            base.SetPipeValue(value);
+            base.SetPipeValue(label);
         }
 
-        public OutPipe()
+        public OutEdgesPipe()
         {
-            base.SetPipeName("out");
+            base.SetPipeName("outE");
         }
     }
 }

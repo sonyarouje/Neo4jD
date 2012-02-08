@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Newtonsoft.Json.Linq;
 namespace Net.Graph.Neo4JD.Traversal.Germlin
 {
     public class PipeParser
@@ -19,8 +19,10 @@ namespace Net.Graph.Neo4JD.Traversal.Germlin
                 if (string.IsNullOrEmpty(seperator))
                     seperator = ".";
             }
-
-            return builder.ToString();
+            builder.Append(";");
+            JObject jobject = new JObject();
+            jobject.Add("script", new JValue(builder.ToString()));
+            return jobject.ToString();
         }
     }
 }

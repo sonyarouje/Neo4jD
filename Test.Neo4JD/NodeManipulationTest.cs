@@ -120,6 +120,23 @@ namespace Test.Neo4jClient
         }
 
         [TestCase]
+        public void CreateSonRelationship()
+        {
+            Node son = new Node();
+            son.AddProperty("FirstName", "Sony");
+            son.AddProperty("LastName", "Arouje");
+            son.Create();
+
+            Node father = Node.Get(1);
+            Assert.IsNotNull(father);
+            Assert.IsNotNull(father.GetLocation());
+            Console.WriteLine(father.GetLocation().ToString());
+
+            Relationship relationship = father.CreateRelationshipTo(son, "son");
+            Assert.IsNotNull(relationship.GetLocation());
+        }
+
+        [TestCase]
         public void RelationShipFromThisNode()
         {
             Node father = Node.Get(1);

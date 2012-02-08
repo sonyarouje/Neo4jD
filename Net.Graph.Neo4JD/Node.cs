@@ -19,7 +19,7 @@ namespace Net.Graph.Neo4JD
             base.SetRepository(_nodeRepo);
         }
 
-        public Node(RequestResult result):this()
+        internal Node(RequestResult result):this()
         {
             this.SetResult(result);
         }
@@ -43,6 +43,13 @@ namespace Net.Graph.Neo4JD
             return db.GetNode(new Uri(location));
         }
 
+        internal override void SetLocation(Uri location)
+        {
+            if (location.ToString().Contains("relationship"))
+                throw new InvalidCastException(string.Format("Unable to cast Relationship to Node. The type is a Relationship, Location: {0}", location.ToString()));
+
+            base.SetLocation(location);
+        }
         public override BaseEntity SetProperty(string propertyName, string propertyValue)
         {
             base.AddProperty(propertyName, propertyValue);
@@ -88,8 +95,13 @@ namespace Net.Graph.Neo4JD
 
         public IList<Node> Filter(INeo4jQuery query)
         {
-            RequestResult result= _nodeRepo.GetRestTraversalResult(this, query.ToString());
-            return CreateNodeArray("self",result);
+            RequestResult result=null;
+            if(query.GetType()==typeof(Traversal.Rest.RestTraversal))
+                result= _nodeRepo.GetRestExecutionResult(this, query.ToString());
+            if (query.GetType() == typeof(Traversal.Germlin.GermlinPipe))
+                result = _nodeRepo.GetGermlinExecutionResult(this,query.ToString());
+
+            return _nodeRepo.CreateNodeArray("self", result);
         }
 
         private IList<Node> GetRelationshipNodes(string direction, string element)
@@ -99,21 +111,7 @@ namespace Net.Graph.Neo4JD
 
             RequestResult result = _nodeRepo.GetRelatedNodes(this, direction);
 
-            return CreateNodeArray(element, result);
-        }
-
-        private IList<Node> CreateNodeArray(string element, RequestResult result)
-        {
-            IList<Node> childs = new List<Node>();
-            JArray array = JArray.Parse(result.GetResponseData());
-            foreach (var tkn in array)
-            {
-                Node node = new Node();
-                node.SetLocation(new Uri(tkn[element].ToString()));
-                node = _nodeRepo.GetNode(node);
-                childs.Add(node);
-            }
-            return childs;
+            return _nodeRepo.CreateNodeArray(element, result);
         }
     }
 }
