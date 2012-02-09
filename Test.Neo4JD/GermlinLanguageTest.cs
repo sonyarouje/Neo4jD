@@ -30,13 +30,13 @@ namespace Test.Neo4jClient
         }
 
         [TestCase]
-        public void GetOutNodes()
+        public void Get_Out_Nodes()
         {
-            GermlinPipe germ = new GermlinPipe();
-            germ.G.V.Out("son");
-            Console.WriteLine(germ.ToString());
+            GermlinPipe germlinQuery = new GermlinPipe();
+            germlinQuery.G.V.Out("son");
+            Console.WriteLine(germlinQuery.ToString());
             Node father = Node.Get(1);
-            IList<Node> nodes = father.Filter(germ);
+            IList<Node> nodes = father.Filter(germlinQuery);
             Assert.AreEqual(1, nodes.Count);
         }
     }

@@ -44,6 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseEntity.cs" />
+    <Compile Include="EntityMapper\EntityId.cs" />
+    <Compile Include="EntityMapper\MapperHelper.cs" />
+    <Compile Include="EntityMapper\NodeMapper.cs" />
     <Compile Include="Exceptions\InvalidNodeException.cs" />
     <Compile Include="Exceptions\NodeDeleteException.cs" />
     <Compile Include="Exceptions\NodeNotFoundException.cs" />

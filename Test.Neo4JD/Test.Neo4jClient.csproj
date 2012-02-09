@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataFormatTest.cs" />
+    <Compile Include="EntityMapperTest.cs" />
     <Compile Include="GermlinLanguageTest.cs" />
     <Compile Include="IndexTest.cs" />
     <Compile Include="NodeManipulationTest.cs" />
