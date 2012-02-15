@@ -1,27 +1,28 @@
-Neo4jD is a light weight .NET client to access Neo4j graph database. The library is still under development.
+	<p>Neo4jD is a light weight .NET client to access Neo4j graph database. The library is still under development.</p>
 
-*Create a Node*
+	<p><strong>Create a Node</strong>
 <pre><code>Node sony=new Node
 sony.AddProperty("FirstName", "Sony").SetProperty("LastName", "Arouje").Create();
 Node viji= new Node();
 viji.AddProperty("FirstName", "Viji").AddProperty("LastName", "P").Create();
-Relationship relationship= sony.CreateRelationshipTo(viji, "wife");</code></pre>
+Relationship relationship= sony.CreateRelationshipTo(viji, "wife");</code></pre></p>
 
-*Get a Node*
+	<p><strong>Get a Node</strong></p>
 
 <pre><code>Node sony=Node.Get(1);</code></pre>
 
-*Add a New property to an existing node*
-* The function AddProperty is used to set any property before saving and the properties will persist while Creating the entity.
-* The function SetProperty is used to set any new property to a persisted entity as shown below.
+	<p><strong>Add a New property to an existing node</strong></p>
+	<ul>
+		<li>The function AddProperty is used to set any property before saving and the properties will persist while Creating the entity.
+		<li>The function SetProperty is used to set any new property to a persisted entity as shown below.
 <pre><code>Node sony=Node.Get(1);
 sony.SetProperty("Profession","Developer");
 </code></pre>
 
-*Out flowing Relationship*
-<pre><code>IList<Node> outNodes=sony.Out()</code></pre>
+	<p><strong>Out flowing Relationship</strong>
+<pre><code>IList&lt;Node&gt; outNodes=sony.Out()</code></pre></p>
 
-*Graph Traversal using REST Api*
+	<p><strong>Graph Traversal using REST Api</strong></p>
 
 <pre><code>
 Node node = Node.Get(19);
@@ -32,15 +33,15 @@ r.Order(OrderType.breadth_first)
    .RelationShips(RelationshipDirection.all_direction, "loves")
    .Uniqueness(UniquenessType.node_global)
    .MaxDepth(2);
-IList<Node> nodes = node.Filter(r);
-     
-//you can see the generated query by
-r.ToString()
-</code></pre>
+IList&lt;Node&gt; nodes = node.Filter(r);
 
-The Generated Json query will look some thing like below
+	<p>//you can see the generated query by
+r.ToString()
+</code></pre></p>
+
+	<p>The Generated Json query will look some thing like below
 <pre><code>
-{
+{</p>
   "order": "breadth_first",
   "return_filter": {
     "body": "position.endNode().getProperty('FirstName').toLowerCase().contains('sony')",
@@ -61,26 +62,29 @@ The Generated Json query will look some thing like below
 }
 </code></pre>
 
-*Creating Index and Searching in Index*
+	<p><strong>Creating Index and Searching in Index</strong>
 An index can be created by using Index object as shown below.
-<pre><code>Index fav = Index.Get("Favorite")</code></pre>
+<pre><code>Index fav = Index.Get("Favorite")</code></pre></p>
 
-Once we have the index object we can easily add a node to it.
+	<p>Once we have the index object we can easily add a node to it.
 <pre><code>
 Node sony=Node.Get(1);
 fav.Add(sony,"FirstName","sony");
-</code></pre>
+</code></pre></p>
 
-We can also remove a node from the index as shown below
-<pre><code>fav.Remove(sony);</code></pre>
+	<p>We can also remove a node from the index as shown below
+<pre><code>fav.Remove(sony);</code></pre></p>
 
-We can also search the index as shown below
+	<p>We can also search the index as shown below
 <pre><code>
 Index fav = Index.Get("favaourites");
 IndexQuery qry = new IndexQuery();
 qry.GetKey("FirstName").StartsWith("so").OR().GetKey("FirstName").Equals("viji");
-IList<Node> nodes= fav.Search(qry);
-</code></pre>
+IList&lt;Node&gt; nodes= fav.Search(qry);
+</code></pre></p>
 
-*Note*
-You will get more insight of the current functionality by going through the NUnit tests.
+	<p><strong>Note</strong><br />
+You will get more insight of the current functionality by going through the NUnit tests.</p>
+
+
+ 
