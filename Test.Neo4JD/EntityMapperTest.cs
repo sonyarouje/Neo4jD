@@ -13,11 +13,10 @@ namespace Test.Neo4jClient
     {
         [EntityId]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public int Pin { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
-        public Address DestAddress { get; set; }
+        public Address Address { get; set; }
     }
 
     public class Address
@@ -27,6 +26,17 @@ namespace Test.Neo4jClient
         public string Address1 { get; set; }
         public string City { get; set; }
     }
+    //public class Person
+    //{
+    //    [EntityId]
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //    public string Address { get; set; }
+    //    public int Pin { get; set; }
+    //    public Address DestAddress { get; set; }
+    //}
+
+
     [TestFixture]
     public class EntityMapperTest
     {
@@ -39,7 +49,7 @@ namespace Test.Neo4jClient
         [TestCase]
         public Person SaveTest()
         {
-            Person person = new Person { Name = "sony", Address = "Bangalore", Pin=560068 };
+            Person person = new Person { FirstName = "Sony", LastName="Arouje" };
             NodeMapper mapper = new NodeMapper();
             person=mapper.Save<Person>(person);
             Console.WriteLine("Generated Id: " + person.Id.ToString());
@@ -54,7 +64,7 @@ namespace Test.Neo4jClient
             Person person = mapper.Get<Person>(7);
             Console.WriteLine("Generated Id: " + person.Id.ToString());
             Assert.AreNotEqual(0, person.Id);
-            Assert.AreEqual(560068, person.Pin);
+            Assert.AreEqual("Sony", person.FirstName);
         }
 
         [TestCase]
@@ -79,12 +89,12 @@ namespace Test.Neo4jClient
         [TestCase]
         public void CanCreateRelationships()
         {
-            Person person = new Person { Name = "sony Relation", Address = "Bangalore", Pin = 560068 };
-            person.DestAddress = new Address();
-            person.DestAddress.Address1 = "Hosur";
-            person.DestAddress.City = "Bangalore";
+            Person person = new Person { FirstName = "Sony Relation", LastName="Arouje" };
+            person.Address = new Address();
+            person.Address.Address1 = "Hosur";
+            person.Address.City = "Bangalore";
             NodeMapper mapper = new NodeMapper();
-            mapper.CreateRelationshipTo<Person, Address>(person,person.DestAddress);
+            mapper.CreateRelationshipTo<Person, Address>(person,person.Address);
             Console.WriteLine(person.Id.ToString());
         }
 

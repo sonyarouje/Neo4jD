@@ -14,7 +14,7 @@ namespace Net.Graph.Neo4JD.EntityMapper
             Node node = Node.Get(id);
             T entity = (T)Activator.CreateInstance(typeof(T));
             if (node.GetProperty("clazz")!=typeof(T).ToString())
-                throw new Exception(string.Format("Retrieved object is an instance of '{0}' and unable to cast it to '{1}'", node.GetProperty("clazz"), typeof(T).ToString()));
+                throw new InvalidCastException(string.Format("Retrieved object with ID '{0}' is an instance of '{1}' and unable to cast it to '{2}'", id.ToString(), node.GetProperty("clazz"), typeof(T).ToString()));
             typeof(T).GetProperties().Where(pr => pr.CanRead && MapperHelper.IsAnId(pr) == false).ToList().ForEach(property =>
             {
                 property.SetValue(entity, MapperHelper.CastPropertyValue(property, node.GetProperty(property.Name)), null);
@@ -28,7 +28,7 @@ namespace Net.Graph.Neo4JD.EntityMapper
         {
             T entity = (T)Activator.CreateInstance(typeof(T));
             if (node.GetProperty("clazz") != typeof(T).ToString())
-                throw new Exception(string.Format("Retrieved object is an instance of '{0}' and unable to cast it to '{1}'", node.GetProperty("clazz"), typeof(T).ToString()));
+                throw new InvalidCastException (string.Format("Retrieved object with ID '{0}' is an instance of '{1}' and unable to cast it to '{2}'",node.Id.ToString(), node.GetProperty("clazz"), typeof(T).ToString()));
             typeof(T).GetProperties().Where(pr => pr.CanRead && MapperHelper.IsAnId(pr) == false).ToList().ForEach(property =>
             {
                 property.SetValue(entity, MapperHelper.CastPropertyValue(property, node.GetProperty(property.Name)), null);
