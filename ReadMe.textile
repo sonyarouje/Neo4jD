@@ -83,6 +83,8 @@ qry.GetKey("FirstName").StartsWith("so").OR().GetKey("FirstName").Equals("viji")
 IList&lt;Node&gt; nodes= fav.Search(qry);
 </code></pre></p>
 
+Have a look at persisting static typed entities using "Entity Mapper":https://github.com/sonyarouje/Neo4jD/wiki/Entity-Mapper
+
 	<p><strong>Note</strong><br />
 You will get more insight of the current functionality by going through the NUnit tests.</p>
 
