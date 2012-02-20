@@ -10,7 +10,7 @@ namespace Net.Graph.Neo4JD.EntityMapper
     public class NodeMapper
     {
         public T Get<T>(int id) where T:class
-        {
+        { 
             Node node = Node.Get(id);
             T entity = (T)Activator.CreateInstance(typeof(T));
             if (node.GetProperty("clazz")!=typeof(T).ToString())
@@ -46,18 +46,40 @@ namespace Net.Graph.Neo4JD.EntityMapper
 
         public T Save<T>(T entity) where T:class
         {
-            Node node = this.CreateNode<T>(entity);
-            node.Create();
-            return MapperHelper.SetIdentity<T>(entity, node.Id);
+            RelationshipCreateHelper relationShipHelper = new RelationshipCreateHelper(this);
+            return (T)relationShipHelper.SaveNodeWithRelationShip(entity);
+            //Node node = this.CreateNode<T>(entity);
+            //node.Create();
+            //return MapperHelper.SetIdentity<T>(entity, node.Id);
         }
 
-        private Node CreateNode<T>(T entity) where T:class
+        public object Save(object entity)
+        {
+            Node node = this.CreateNode(entity);
+            node.Create();
+            return MapperHelper.SetIdentity(entity, node.Id);
+        }
+
+        internal Node CreateNode<T>(T entity) where T:class
         {
             Node node = new Node();
             node.AddProperty("clazz", typeof(T).ToString());
             typeof(T).GetProperties().Where(pr => pr.CanRead && MapperHelper.IsAnId(pr) == false).ToList().ForEach(property =>
             {
                 if(MapperHelper.IsPrimitive(property.PropertyType))
+                    node.AddProperty(property.Name, property.GetValue(entity, null).ToString());
+            });
+
+            return node;
+        }
+
+        internal Node CreateNode(object entity)
+        {
+            Node node = new Node();
+            node.AddProperty("clazz", entity.GetType().ToString());
+            entity.GetType().GetProperties().Where(pr => pr.CanRead && MapperHelper.IsAnId(pr) == false).ToList().ForEach(property =>
+            {
+                if (MapperHelper.IsPrimitive(property.PropertyType))
                     node.AddProperty(property.Name, property.GetValue(entity, null).ToString());
             });
 
@@ -90,8 +112,10 @@ namespace Net.Graph.Neo4JD.EntityMapper
                 this.CreateRelationshipTo<TEntity, TRelated>(entity, related);
         }
 
-        private Node SaveAndReturnAsNode<T>(T entity) where T:class
+        internal Node SaveAndReturnAsNode<T>(T entity) where T:class
         {
+            if (entity == null)
+                return null;
             int id = MapperHelper.GetIdentity<T>(entity);
             Node node = null;
             if (id <= 0)
@@ -99,6 +123,24 @@ namespace Net.Graph.Neo4JD.EntityMapper
                 node=this.CreateNode<T>(entity);
                 node.Create();
                 MapperHelper.SetIdentity<T>(entity, node.Id);
+            }
+            else
+                node = Node.Get(id);
+
+            return node;
+        }
+
+        internal Node SaveAndReturnAsNode(object entity)
+        {
+            if (entity == null)
+                return null;
+            int id = MapperHelper.GetIdentity(entity);
+            Node node = null;
+            if (id <= 0)
+            {
+                node = this.CreateNode(entity);
+                node.Create();
+                MapperHelper.SetIdentity(entity, node.Id);
             }
             else
                 node = Node.Get(id);

@@ -38,7 +38,7 @@ namespace Test.Neo4jClient
 
 
     [TestFixture]
-    public class EntityMapperTest
+    public class SimpleEntityMapperTest
     {
         [SetUp]
         public void Initialize()
@@ -107,5 +107,12 @@ namespace Test.Neo4jClient
             Assert.AreEqual(1, address.Count);
             Assert.AreEqual("Hosur", address[0].Address1);
         }
+
+        //[TestCase]
+        //public void EntityConfigurationTest()
+        //{
+        //    EntityConfiguration config = new EntityConfiguration();
+        //    config.Include<Person,Address>(p => p.Address);
+        //}
     }
 }
