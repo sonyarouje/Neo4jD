@@ -13,21 +13,41 @@ namespace Test.Neo4jClient.EntityMappingTest
     {
         public Order()
         {
-            OrderItems = new List<OrderItem>();
+            _orderItems = new List<OrderItem>();
         }
 
         [EntityId]
         public int Id { get; set; }
         public string Name { get; set; }
-        public IList<OrderItem> OrderItems { get; private set; }
+
+        IList<OrderItem> _orderItems;
+        public IList<OrderItem> OrderItems 
+        { 
+            get
+            {
+                if (_orderItems.Count > 0)
+                    return _orderItems;
+
+                NodeMapper nodeMapper = new NodeMapper();
+                return nodeMapper.GetRelatedEntities<OrderItem>(() => OrderItems, this);
+            }
+            private set
+            {
+                _orderItems = value;
+            }
+        }
         public void AddOrderItem(OrderItem item)
         {
-            this.OrderItems.Add(item);
+            this._orderItems.Add(item);
         }
     }
 
     public class OrderItem
     {
+        public OrderItem()
+        {
+
+        }
         public OrderItem(int id, Product product)
         {
             this.Id = id;
@@ -40,6 +60,10 @@ namespace Test.Neo4jClient.EntityMappingTest
 
     public class Product
     {
+        public Product()
+        {
+
+        }
         public Product(int id, string productName)
         {
             this.Id = id;
@@ -85,5 +109,13 @@ namespace Test.Neo4jClient.EntityMappingTest
             Assert.AreNotEqual(0, _order.Id);
         }
 
+        [TestCase]
+        public void GetComplexObject()
+        {
+            NodeMapper nodeMapper = new NodeMapper();
+            Order order= nodeMapper.Get<Order>(14);
+            Assert.AreEqual(14, order.Id);
+            Assert.AreEqual(2, order.OrderItems.Count);
+        }
     }
 }

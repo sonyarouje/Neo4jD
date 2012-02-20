@@ -7,7 +7,7 @@ namespace Net.Graph.Neo4JD.EntityMapper
 {
     internal class MapperHelper
     {
-        internal static T SetIdentity<T>(T entity, int id) where T : class
+        internal static T SetIdentity<T>(T entity, int id)
         {
             typeof(T).GetProperties().Where(pr => pr.CanRead && IsAnId(pr) == true).ToList().ForEach(property =>
             {

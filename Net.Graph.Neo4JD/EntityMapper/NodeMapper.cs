@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Linq.Expressions;
+using System.ComponentModel;
 using Net.Graph.Neo4JD;
 using Net.Graph.Neo4JD.Traversal.Germlin;
 namespace Net.Graph.Neo4JD.EntityMapper
@@ -24,7 +27,7 @@ namespace Net.Graph.Neo4JD.EntityMapper
             return entity;
         }
 
-        private T Get<T>(Node node) where T : class
+        private T Get<T>(Node node)
         {
             T entity = (T)Activator.CreateInstance(typeof(T));
             if (node.GetProperty("clazz") != typeof(T).ToString())
@@ -153,6 +156,28 @@ namespace Net.Graph.Neo4JD.EntityMapper
             Node node = Node.Get(MapperHelper.GetIdentity<TEntity>(entity));
             GermlinPipe germlin = new GermlinPipe();
             germlin.G.V.Out(related.ToString());
+            IList<Node> relatedNodes = node.Filter(germlin);
+            IList<TRelated> relatedEntities = new List<TRelated>();
+            foreach (Node nodeToConvert in relatedNodes)
+                relatedEntities.Add(this.Get<TRelated>(nodeToConvert));
+            return relatedEntities;
+        }
+
+        public IList<TRelated> GetRelatedEntities<TRelated>(Expression<Func<TRelated>> property, object entity)
+        {
+            return this.LoadRelatedEntities<TRelated>(entity, ((MemberExpression)property.Body).Member.Name);
+        }
+
+        public IList<TRelated> GetRelatedEntities<TRelated>(Expression<Func<ICollection<TRelated>>> property, object entity)
+        {
+            return this.LoadRelatedEntities<TRelated>(entity, ((MemberExpression)property.Body).Member.Name);
+        }
+
+        private IList<TRelated> LoadRelatedEntities<TRelated>(object entity, string memberName)
+        {
+            Node node = Node.Get(MapperHelper.GetIdentity(entity));
+            GermlinPipe germlin = new GermlinPipe();
+            germlin.G.V.Out(memberName);
             IList<Node> relatedNodes = node.Filter(germlin);
             IList<TRelated> relatedEntities = new List<TRelated>();
             foreach (Node nodeToConvert in relatedNodes)
