@@ -1,92 +1,146 @@
-	<p>Neo4jD is a light weight .NET client to access Neo4j graph database. The library is still under development.</p>
+At the core Neo4jD uses Node and Relationship to persist data to Neo4j graph database. If you want to see how the core is working then visit "here":https://github.com/sonyarouje/Neo4jD/wiki. You might notice that, the Node and Relationship is not static typed objects. Most of us work with Static typed entities and want to persist the same. To deal with static typed entities I added a layer on top of Neo4jD core called NodeMapper.
 
-	<p><strong>Create a Node</strong>
-<pre><code>Node sony=new Node
-sony.AddProperty("FirstName", "Sony").SetProperty("LastName", "Arouje").Create();
-Node viji= new Node();
-viji.AddProperty("FirstName", "Viji").AddProperty("LastName", "P").Create();
-Relationship relationship= sony.CreateRelationshipTo(viji, "wife");</code></pre></p>
+*Node Mapper*
+The functionality of NodeMapper is 
+* Map the entity to Node object and persist in Neo4j. 
+* Handles the relation between entities, if an entity has a sub entity then NodeMapper will create a relationship between them.
+* Persist the object graph using the Model created, will cover later in the page.
+* Inject interceptor for lazy loading.
+* And more
 
-	<p><strong>Get a Node</strong></p>
-
-<pre><code>Node sony=Node.Get(1);</code></pre>
-
-	<p><strong>Add a New property to an existing node</strong></p>
-	<ul>
-		<li>The function AddProperty is used to set any property before saving and the properties will persist while Creating the entity.
-		<li>The function SetProperty is used to set any new property to a persisted entity as shown below.
-<pre><code>Node sony=Node.Get(1);
-sony.SetProperty("Profession","Developer");
-</code></pre>
-
-	<p><strong>Out flowing Relationship</strong>
-<pre><code>IList&lt;Node&gt; outNodes=sony.Out()</code></pre></p>
-
-	<p><strong>Graph Traversal using REST Api</strong></p>
+*How to Persist entities using NodeMapper*
+To persist the entities, first we need to draw the object graph of the Entity we need to persist. Let's have a look at an eg.
 
 <pre><code>
-Node node = Node.Get(19);
-RestTraversal r = new RestTraversal();
-r.Order(OrderType.breadth_first)
-   .Filter ( new PropertyFilter().SetPropertyName("FirstName").Contains("marry") )
-   .RelationShips(RelationshipDirection.out_direction, "wife")
-   .RelationShips(RelationshipDirection.all_direction, "loves")
-   .Uniqueness(UniquenessType.node_global)
-   .MaxDepth(2);
-IList&lt;Node&gt; nodes = node.Filter(r);
-
-	<p>//you can see the generated query by
-r.ToString()
-</code></pre></p>
-
-	<p>The Generated Json query will look some thing like below
-<pre><code>
-{</p>
-  "order": "breadth_first",
-  "return_filter": {
-    "body": "position.endNode().getProperty('FirstName').toLowerCase().contains('sony')",
-    "language": "javascript"
-  },
-  "relationships": [
+    public class Order
     {
-      "direction": "out",
-      "type": "wife"
-    },
-    {
-      "direction": "all",
-      "type": "loves"
+        public Order()
+        {
+            _orderItems = new List<OrderItem>();
+        }
+
+        [EntityId]
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        IList<OrderItem> _orderItems;
+        public virtual IList<OrderItem> OrderItems 
+        { 
+            get { return _orderItems; }
+            private set { _orderItems = value; }
+        }
+        public void AddOrderItem(OrderItem item)
+        {
+            this._orderItems.Add(item);
+        }
     }
-  ],
-  "uniqueness": "node_global",
-  "max_depth": 2
-}
+
+    public class OrderItem
+    {
+        public OrderItem()
+        {
+        }
+        public OrderItem(int id, Product product)
+        {
+            this.Id = id;
+            this.Product = product;
+        }
+        [EntityId]
+        public int Id { get; set; }
+        public virtual Product Product { get; set; }
+    }
+
+    public class Product
+    {
+        public Product()
+        {
+
+        }
+        public Product(int id, string productName)
+        {
+            this.Id = id;
+            this.ProductName = productName;
+        }
+        [EntityId]
+        public int Id { get; set; }
+        public string ProductName { get; set; }
+    }
 </code></pre>
 
-	<p><strong>Creating Index and Searching in Index</strong>
-An index can be created by using Index object as shown below.
-<pre><code>Index fav = Index.Get("Favorite")</code></pre></p>
+You can notice some rules in defining entities.
+* The unique Id field is decorated with EntityId attribute. It's mandatory to identify the Id field of the entity.
+* Properties that needs Lazy loading should be virtual.
+* Mandatory to have a default parameter less constructor.
 
-	<p>Once we have the index object we can easily add a node to it.
+Now let's define the object graph. This configuration helps NodeMapper to persist the entire Graph. It's very similar to how we do in Entity Framwork Code first approach.
 <pre><code>
-Node sony=Node.Get(1);
-fav.Add(sony,"FirstName","sony");
-</code></pre></p>
+    public class OrderConfiguration:EntityConfiguration<Order>
+    {
+        public OrderConfiguration()
+        {
+            this.RelatedTo<OrderItem>(o => o.OrderItems);
+        }
+    }
+    public class OrderItemConfiguration:EntityConfiguration<OrderItem>
+    {
+        public OrderItemConfiguration()
+        {
+            this.RelatedTo<Product>(oi => oi.Product);
+        }
+    }
+    public class ProductConfiguration:EntityConfiguration<Product>
+    {
+        public ProductConfiguration()
+        {
+            this.Leaf();
+        }
+    }
+</code></pre>
+As you can see the ProductConfiguration there is no related entity so we marked it as Leaf.
 
-	<p>We can also remove a node from the index as shown below
-<pre><code>fav.Remove(sony);</code></pre></p>
-
-	<p>We can also search the index as shown below
+Let's see how to persist an order
 <pre><code>
-Index fav = Index.Get("favaourites");
-IndexQuery qry = new IndexQuery();
-qry.GetKey("FirstName").StartsWith("so").OR().GetKey("FirstName").Equals("viji");
-IList&lt;Node&gt; nodes= fav.Search(qry);
-</code></pre></p>
+        [SetUp]
+        public void Initialize()
+        {
+            GraphEnvironment.SetBaseUri("http://localhost:7474/");
+            ModelBuilder.Add(new OrderConfiguration());
+            ModelBuilder.Add(new OrderItemConfiguration());
+            ModelBuilder.Add(new ProductConfiguration());
+        }
+        [TestCase]
+        public void SaveObjectGraph()
+        {
+            Order order = new Order();
+            order.Id = 0;
+            order.Name = "Sony";
+            order.AddOrderItem(new OrderItem(0, new Product(0, "Rice")));
+            order.AddOrderItem(new OrderItem(0, new Product(0, "Sugar")));
+            NodeMapper nodeMapper = new NodeMapper();
+            nodeMapper.Save<Order>(order);
+            Assert.AreEqual(1, order.Id);
+        }
+</code></pre>
+In the Initialize method of NUnit Test we added EntityConfiguration to ModelBuilder. NodeMapper uses the ModelBuilder to understand the Object graph and uses reflection to traverse through the object graph and persist it.
 
-Have a look at persisting static typed entities using "Entity Mapper":https://github.com/sonyarouje/Neo4jD/wiki/Entity-Mapper
+*Lazy Loading*
+Neo4jD uses Lazy loading to load the related entities, it uses Castle DynamicProxy to intercept property calls and inject lazy loading functionality. To perform lazy loading the property should be virtual,  you can see the OrderItems in Order entity. 
 
-	<p><strong>Note</strong><br />
-You will get more insight of the current functionality by going through the NUnit tests.</p>
-
-
- 
+*Retrieve saved Entity*
+<pre><code>
+        [TestCase]
+        public void GetOrder()
+        {
+            NodeMapper nodeMapper = new NodeMapper();
+            Order order = nodeMapper.Get<Order>(14);
+            Assert.AreEqual(14, order.Id);
+            foreach (OrderItem item in order.OrderItems)
+            {
+                Console.WriteLine(item.Id.ToString());
+                Product prod = item.Product;
+                if (prod != null)
+                    Console.WriteLine(prod.ProductName);
+            }
+            Assert.AreEqual(2, order.OrderItems.Count);
+        }
+</code></pre>

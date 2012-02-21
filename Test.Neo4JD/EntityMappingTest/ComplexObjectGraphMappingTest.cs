@@ -23,14 +23,8 @@ namespace Test.Neo4jClient.EntityMappingTest
         IList<OrderItem> _orderItems;
         public virtual IList<OrderItem> OrderItems 
         { 
-            get
-            {
-                return _orderItems;
-            }
-            private set
-            {
-                _orderItems = value;
-            }
+            get { return _orderItems; }
+            private set { _orderItems = value; }
         }
         public void AddOrderItem(OrderItem item)
         {
@@ -42,7 +36,6 @@ namespace Test.Neo4jClient.EntityMappingTest
     {
         public OrderItem()
         {
-
         }
         public OrderItem(int id, Product product)
         {
@@ -128,7 +121,7 @@ namespace Test.Neo4jClient.EntityMappingTest
                 if (prod != null)
                     Console.WriteLine(prod.ProductName);
             }
-            //Assert.AreEqual(null, order.OrderItems);
+            Assert.AreEqual(2, order.OrderItems.Count);
 
         }
     }
