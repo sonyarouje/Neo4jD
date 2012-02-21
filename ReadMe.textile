@@ -3,11 +3,11 @@
 At the core Neo4jD uses Node and Relationship to persist data to Neo4j graph database. If you want to see how the core is working then visit "here":https://github.com/sonyarouje/Neo4jD/wiki. You might notice that, the Node and Relationship is not static typed objects. Most of us work with Static typed entities and want to persist the same. To deal with static typed entities I added a layer on top of Neo4jD core called NodeMapper.
 
 *Node Mapper*
-The functionality of NodeMapper is 
+Below are the features of NodeMapper 
 * Map the entity to Node object and persist in Neo4j. 
 * Handles the relation between entities, if an entity has a sub entity then NodeMapper will create a relationship between them.
 * Persist the object graph using the Model created, will cover later in the page.
-* Inject interceptor for lazy loading.
+* Inject interceptor for Lazy loading of related entities.
 * And more
 
 *How to Persist entities using NodeMapper*
