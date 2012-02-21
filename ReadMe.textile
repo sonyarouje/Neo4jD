@@ -1,3 +1,5 @@
+*Persist Static typed Entities to Neo4j using Neo4jD*
+
 At the core Neo4jD uses Node and Relationship to persist data to Neo4j graph database. If you want to see how the core is working then visit "here":https://github.com/sonyarouje/Neo4jD/wiki. You might notice that, the Node and Relationship is not static typed objects. Most of us work with Static typed entities and want to persist the same. To deal with static typed entities I added a layer on top of Neo4jD core called NodeMapper.
 
 *Node Mapper*
