@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\Lib\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -48,6 +51,8 @@
     <Compile Include="EntityMapper\EntityConfiguration.cs" />
     <Compile Include="EntityMapper\EntityId.cs" />
     <Compile Include="EntityMapper\EntityRelation.cs" />
+    <Compile Include="EntityMapper\LazyLoader.cs" />
+    <Compile Include="EntityMapper\LazyLoadInterceptor.cs" />
     <Compile Include="EntityMapper\MapperHelper.cs" />
     <Compile Include="EntityMapper\ModelBuilder.cs" />
     <Compile Include="EntityMapper\NodeMapper.cs" />

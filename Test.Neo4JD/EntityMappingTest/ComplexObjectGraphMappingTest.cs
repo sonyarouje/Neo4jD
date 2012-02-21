@@ -18,18 +18,14 @@ namespace Test.Neo4jClient.EntityMappingTest
 
         [EntityId]
         public int Id { get; set; }
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         IList<OrderItem> _orderItems;
-        public IList<OrderItem> OrderItems 
+        public virtual IList<OrderItem> OrderItems 
         { 
             get
             {
-                if (_orderItems.Count > 0)
-                    return _orderItems;
-
-                NodeMapper nodeMapper = new NodeMapper();
-                return nodeMapper.GetRelatedEntities<OrderItem>(() => OrderItems, this);
+                return _orderItems;
             }
             private set
             {
@@ -55,7 +51,8 @@ namespace Test.Neo4jClient.EntityMappingTest
         }
         [EntityId]
         public int Id { get; set; }
-        public Product Product { get; set; }
+
+        public virtual Product Product { get; set; }
     }
 
     public class Product
@@ -116,6 +113,23 @@ namespace Test.Neo4jClient.EntityMappingTest
             Order order= nodeMapper.Get<Order>(14);
             Assert.AreEqual(14, order.Id);
             Assert.AreEqual(2, order.OrderItems.Count);
+        }
+
+        [TestCase]
+        public void GetOrder()
+        {
+            NodeMapper nodeMapper = new NodeMapper();
+            Order order = nodeMapper.Get<Order>(14);
+            Assert.AreEqual(14, order.Id);
+            foreach (OrderItem item in order.OrderItems)
+            {
+                Console.WriteLine(item.Id.ToString());
+                Product prod = item.Product;
+                if (prod != null)
+                    Console.WriteLine(prod.ProductName);
+            }
+            //Assert.AreEqual(null, order.OrderItems);
+
         }
     }
 }

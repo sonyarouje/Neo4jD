@@ -15,21 +15,12 @@ namespace Net.Graph.Neo4JD.EntityMapper
         public T Get<T>(int id) where T:class
         { 
             Node node = Node.Get(id);
-            T entity = (T)Activator.CreateInstance(typeof(T));
-            if (node.GetProperty("clazz")!=typeof(T).ToString())
-                throw new InvalidCastException(string.Format("Retrieved object with ID '{0}' is an instance of '{1}' and unable to cast it to '{2}'", id.ToString(), node.GetProperty("clazz"), typeof(T).ToString()));
-            typeof(T).GetProperties().Where(pr => pr.CanRead && MapperHelper.IsAnId(pr) == false).ToList().ForEach(property =>
-            {
-                property.SetValue(entity, MapperHelper.CastPropertyValue(property, node.GetProperty(property.Name)), null);
-            });
-
-            entity = MapperHelper.SetIdentity<T>(entity, id);
-            return entity;
+            return Get<T>(node);
         }
 
-        private T Get<T>(Node node)
+        private static T Get<T>(Node node) where T:class
         {
-            T entity = (T)Activator.CreateInstance(typeof(T));
+            T entity = LazyLoader.EnableLazyLoading<T>();  //(T)Activator.CreateInstance(typeof(T));
             if (node.GetProperty("clazz") != typeof(T).ToString())
                 throw new InvalidCastException (string.Format("Retrieved object with ID '{0}' is an instance of '{1}' and unable to cast it to '{2}'",node.Id.ToString(), node.GetProperty("clazz"), typeof(T).ToString()));
             typeof(T).GetProperties().Where(pr => pr.CanRead && MapperHelper.IsAnId(pr) == false).ToList().ForEach(property =>
@@ -159,21 +150,21 @@ namespace Net.Graph.Neo4JD.EntityMapper
             IList<Node> relatedNodes = node.Filter(germlin);
             IList<TRelated> relatedEntities = new List<TRelated>();
             foreach (Node nodeToConvert in relatedNodes)
-                relatedEntities.Add(this.Get<TRelated>(nodeToConvert));
+                relatedEntities.Add(Get<TRelated>(nodeToConvert));
             return relatedEntities;
         }
 
-        public IList<TRelated> GetRelatedEntities<TRelated>(Expression<Func<TRelated>> property, object entity)
+        public IList<TRelated> GetRelatedEntities<TRelated>(object entity,Expression<Func<TRelated>> property) where TRelated:class
         {
             return this.LoadRelatedEntities<TRelated>(entity, ((MemberExpression)property.Body).Member.Name);
         }
 
-        public IList<TRelated> GetRelatedEntities<TRelated>(Expression<Func<ICollection<TRelated>>> property, object entity)
+        public IList<TRelated> GetRelatedEntities<TRelated>(object entity,Expression<Func<ICollection<TRelated>>> property) where TRelated : class
         {
             return this.LoadRelatedEntities<TRelated>(entity, ((MemberExpression)property.Body).Member.Name);
         }
 
-        private IList<TRelated> LoadRelatedEntities<TRelated>(object entity, string memberName)
+        public IList<TRelated> LoadRelatedEntities<TRelated>(object entity, string memberName) where TRelated : class
         {
             Node node = Node.Get(MapperHelper.GetIdentity(entity));
             GermlinPipe germlin = new GermlinPipe();
@@ -181,7 +172,19 @@ namespace Net.Graph.Neo4JD.EntityMapper
             IList<Node> relatedNodes = node.Filter(germlin);
             IList<TRelated> relatedEntities = new List<TRelated>();
             foreach (Node nodeToConvert in relatedNodes)
-                relatedEntities.Add(this.Get<TRelated>(nodeToConvert));
+                relatedEntities.Add(Get<TRelated>(nodeToConvert));
+            return relatedEntities;
+        }
+
+        public static IList<TRelated> LoadRelatedEntitiesWithId<TRelated>(int id, string memberName) where TRelated : class
+        {
+            Node node = Node.Get(id);
+            GermlinPipe germlin = new GermlinPipe();
+            germlin.G.V.Out(memberName);
+            IList<Node> relatedNodes = node.Filter(germlin);
+            IList<TRelated> relatedEntities = new List<TRelated>();
+            foreach (Node nodeToConvert in relatedNodes)
+                relatedEntities.Add(Get<TRelated>(nodeToConvert));
             return relatedEntities;
         }
     }

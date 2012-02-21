@@ -29,6 +29,8 @@ namespace Net.Graph.Neo4JD.EntityMapper
 
         internal static int GetIdentity<T>(T entity) where T : class
         {
+            if (entity == null)
+                return 0;
             object propertyValue = 0;
             typeof(T).GetProperties().Where(pr => pr.CanRead && IsAnId(pr) == true).ToList().ForEach(property =>
             {
@@ -40,6 +42,9 @@ namespace Net.Graph.Neo4JD.EntityMapper
 
         internal static int GetIdentity(object entity)
         {
+            if (entity == null)
+                return 0;
+
             object propertyValue = 0;
             entity.GetType().GetProperties().Where(pr => pr.CanRead && IsAnId(pr) == true).ToList().ForEach(property =>
             {
