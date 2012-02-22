@@ -20,11 +20,11 @@ namespace Net.Graph.Neo4JD.EntityMapper
                 _relation.AddSubEntity(child, member, isCollection);
         }
 
-        public EntityRelation GetRelatedEntities()
+        public EntityRelation GetRelatedEntityConfiguration()
         {
             return _relation;
         }
 
-        public Type EntityType { get { return _relation.Entity; } }
+        public Type EntityType { get { return _relation.EntityType; } }
     }
 }

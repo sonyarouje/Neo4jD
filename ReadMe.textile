@@ -146,3 +146,6 @@ Neo4jD uses Lazy loading to load the related entities, it uses Castle DynamicPro
             Assert.AreEqual(2, order.OrderItems.Count);
         }
 </code></pre>
+
+
+"Nuget Package":http://nuget.org/packages/Neo4jD

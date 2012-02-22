@@ -10,9 +10,9 @@ namespace Net.Graph.Neo4JD.EntityMapper
         public EntityRelation(Type entity)
         {
             this.DirectSubEntities = new List<SubEntityDetails>();
-            this.Entity = entity;
+            this.EntityType = entity;
         }
-        internal Type Entity { get; private set; }
+        internal Type EntityType { get; private set; }
 
         internal IList<SubEntityDetails> DirectSubEntities { get; private set; }
         internal void AddSubEntity(Type child, string memberName, bool isCollection)

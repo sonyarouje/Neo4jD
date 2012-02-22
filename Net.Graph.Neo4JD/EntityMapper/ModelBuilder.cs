@@ -11,7 +11,7 @@ namespace Net.Graph.Neo4JD.EntityMapper
 
         public static void Add(BaseConfiguration configuration)
         {
-            _relationShips.Add(configuration.EntityType, configuration.GetRelatedEntities());
+            _relationShips.Add(configuration.EntityType, configuration.GetRelatedEntityConfiguration());
         }
 
         public static IList<SubEntityDetails> GetSubEntities(Type parent)

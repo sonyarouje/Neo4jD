@@ -91,7 +91,7 @@ namespace Test.Neo4jClient.EntityMappingTest
         {
             Order order = new Order();
             order.Id = 0;
-            order.Name = "Sony";
+            order.Name = "Viji";
             order.AddOrderItem(new OrderItem(0, new Product(0, "Rice")));
             order.AddOrderItem(new OrderItem(0, new Product(0, "Sugar")));
 
@@ -114,7 +114,7 @@ namespace Test.Neo4jClient.EntityMappingTest
         public void GetOrder()
         {
             NodeMapper nodeMapper = new NodeMapper();
-            Order order = nodeMapper.Get<Order>(14);
+            Order order = nodeMapper.Get<Order>(19);
             Assert.AreEqual(14, order.Id);
             foreach (OrderItem item in order.OrderItems)
             {

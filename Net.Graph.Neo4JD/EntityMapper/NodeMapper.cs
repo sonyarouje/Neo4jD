@@ -56,19 +56,6 @@ namespace Net.Graph.Neo4JD.EntityMapper
             return relatedEntities;
         }
 
-        internal Node CreateNode(object entity)
-        {
-            Node node = new Node();
-            node.AddProperty("clazz", entity.GetType().ToString());
-            entity.GetType().GetProperties().Where(pr => pr.CanRead && MapperHelper.IsAnId(pr) == false).ToList().ForEach(property =>
-            {
-                if (MapperHelper.IsPrimitive(property.PropertyType))
-                    node.AddProperty(property.Name, property.GetValue(entity, null).ToString());
-            });
-
-            return node;
-        }
-
         internal Node SaveAndReturnAsNode(object entity)
         {
             if (entity == null)
@@ -86,5 +73,20 @@ namespace Net.Graph.Neo4JD.EntityMapper
 
             return node;
         }
+
+        private Node CreateNode(object entity)
+        {
+            Node node = new Node();
+            node.AddProperty("clazz", entity.GetType().ToString());
+            entity.GetType().GetProperties().Where(pr => pr.CanRead && MapperHelper.IsAnId(pr) == false).ToList().ForEach(property =>
+            {
+                if (MapperHelper.IsPrimitive(property.PropertyType))
+                    node.AddProperty(property.Name, property.GetValue(entity, null).ToString());
+            });
+
+            return node;
+        }
+
+
     }
 }
