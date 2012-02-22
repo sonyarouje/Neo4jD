@@ -9,12 +9,7 @@ namespace Net.Graph.Neo4JD.EntityMapper
     {
         internal static T SetIdentity<T>(T entity, int id)
         {
-            typeof(T).GetProperties().Where(pr => pr.CanRead && IsAnId(pr) == true).ToList().ForEach(property =>
-            {
-                property.SetValue(entity, id, null);
-            });
-
-            return entity;
+            return (T)SetIdentity(entity, id);
         }
 
         internal static object SetIdentity(object entity, int id)
@@ -29,15 +24,7 @@ namespace Net.Graph.Neo4JD.EntityMapper
 
         internal static int GetIdentity<T>(T entity) where T : class
         {
-            if (entity == null)
-                return 0;
-            object propertyValue = 0;
-            typeof(T).GetProperties().Where(pr => pr.CanRead && IsAnId(pr) == true).ToList().ForEach(property =>
-            {
-                propertyValue = property.GetValue(entity, null);
-            });
-
-            return Convert.ToInt32(propertyValue);
+            return GetIdentity(entity);
         }
 
         internal static int GetIdentity(object entity)

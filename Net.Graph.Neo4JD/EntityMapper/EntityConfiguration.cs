@@ -14,23 +14,12 @@ namespace Net.Graph.Neo4JD.EntityMapper
         public EntityConfiguration<T> RelatedTo<R>(Expression<Func<T,R>>  expression)
         {
             MemberExpression body = (MemberExpression)expression.Body;
-            //BinaryExpression body = (BinaryExpression)expr.Body;
-            //ParameterExpression left = (ParameterExpression)body.Left;
-            //ParameterExpression right = (ParameterExpression)body.Right;
-            //Console.WriteLine(expression.Body.ToString());
-            //Console.WriteLine(expression.Body.Type.ToString());
-            //Console.WriteLine(typeof(T).ToString());
-            //Console.WriteLine(body.Member.Name);
             base.AddExpression(typeof(R), body.Member.Name, false);
             return this;
         }
         public EntityConfiguration<T> RelatedTo<R>(Expression<Func<T, ICollection<R>>> expression)
         {
             MemberExpression body = (MemberExpression)expression.Body;
-            //Console.WriteLine(expression.Body.ToString());
-            //Console.WriteLine(expression.Body.Type.ToString());
-            //Console.WriteLine(typeof(T).ToString());
-            //Console.WriteLine(body.Member.Name);
             base.AddExpression(typeof(R), body.Member.Name, true);
             return this;
         }
