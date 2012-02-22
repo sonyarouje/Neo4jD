@@ -86,27 +86,28 @@ namespace Test.Neo4jClient
             Address address = mapper.Get<Address>(7);
         }
 
-        [TestCase]
-        public void CanCreateRelationships()
-        {
-            Person person = new Person { FirstName = "Sony Relation", LastName="Arouje" };
-            person.Address = new Address();
-            person.Address.Address1 = "Hosur";
-            person.Address.City = "Bangalore";
-            NodeMapper mapper = new NodeMapper();
-            mapper.CreateRelationshipTo<Person, Address>(person,person.Address);
-            Console.WriteLine(person.Id.ToString());
-        }
+        ///Methods are obselete now and removed.
+        //[TestCase]
+        //public void CanCreateRelationships()
+        //{
+        //    Person person = new Person { FirstName = "Sony Relation", LastName="Arouje" };
+        //    person.Address = new Address();
+        //    person.Address.Address1 = "Hosur";
+        //    person.Address.City = "Bangalore";
+        //    NodeMapper mapper = new NodeMapper();
+        //    mapper.CreateRelationshipTo<Person, Address>(person,person.Address);
+        //    Console.WriteLine(person.Id.ToString());
+        //}
 
-        [TestCase]
-        public void CanGetRelatedNodes()
-        {
-            NodeMapper mapper = new NodeMapper();
-            Person person = mapper.Get<Person>(12);
-            IList<Address> address = mapper.GetRelatedEntities<Person, Address>(person, typeof(Address));
-            Assert.AreEqual(1, address.Count);
-            Assert.AreEqual("Hosur", address[0].Address1);
-        }
+        //[TestCase]
+        //public void CanGetRelatedNodes()
+        //{
+        //    NodeMapper mapper = new NodeMapper();
+        //    Person person = mapper.Get<Person>(12);
+        //    IList<Address> address = mapper.GetRelatedEntities<Person, Address>(person, typeof(Address));
+        //    Assert.AreEqual(1, address.Count);
+        //    Assert.AreEqual("Hosur", address[0].Address1);
+        //}
 
         //[TestCase]
         //public void EntityConfigurationTest()

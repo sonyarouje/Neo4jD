@@ -67,7 +67,7 @@ namespace Test.Neo4jClient.EntityMappingTest
     [TestFixture]
     public class ComplexObjectGraphMappingTest
     {
-        private Order _order;
+        //private Order _order;
 
         [SetUp]
         public void Initialize()
@@ -77,11 +77,7 @@ namespace Test.Neo4jClient.EntityMappingTest
             ModelBuilder.Add(new OrderConfiguration());
             ModelBuilder.Add(new OrderItemConfiguration());
             ModelBuilder.Add(new ProductConfiguration());
-            _order = new Order();
-            _order.Id = 0;
-            _order.Name = "Sony";
-            _order.AddOrderItem(new OrderItem(0, new Product(0, "Rice")));
-            _order.AddOrderItem(new OrderItem(0, new Product(0, "Sugar")));
+
         }
 
         [TestFixtureTearDown]
@@ -91,12 +87,18 @@ namespace Test.Neo4jClient.EntityMappingTest
         }
 
         [TestCase]
-        public void SaveObjectGraph()
+        public void SaveOrder()
         {
+            Order order = new Order();
+            order.Id = 0;
+            order.Name = "Sony";
+            order.AddOrderItem(new OrderItem(0, new Product(0, "Rice")));
+            order.AddOrderItem(new OrderItem(0, new Product(0, "Sugar")));
+
             NodeMapper nodeMapper = new NodeMapper();
-            nodeMapper.Save<Order>(_order);
-            Console.WriteLine(_order.Id.ToString());
-            Assert.AreNotEqual(0, _order.Id);
+            nodeMapper.Save<Order>(order);
+            Console.WriteLine(order.Id.ToString());
+            Assert.AreNotEqual(0, order.Id);
         }
 
         [TestCase]
@@ -122,7 +124,6 @@ namespace Test.Neo4jClient.EntityMappingTest
                     Console.WriteLine(prod.ProductName);
             }
             Assert.AreEqual(2, order.OrderItems.Count);
-
         }
     }
 }
