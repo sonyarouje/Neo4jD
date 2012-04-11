@@ -8,6 +8,12 @@ namespace Net.Graph.Neo4JD.Persistance
 {
     public class NodeRepo:Repository
     {
+        private RelationShipRepo _relationShipRepo;
+
+        public NodeRepo()
+        {
+            _relationShipRepo = new RelationShipRepo();
+        }
 
         public Node GetNode(Uri nodeUri)
         {
@@ -74,6 +80,24 @@ namespace Net.Graph.Neo4JD.Persistance
                 childs.Add(node);
             }
             return childs;
+        }
+
+        public IList<Relationship> GetAllPathsTo(Node toNode, RequestResult result)
+        {
+            IList<Relationship> relationShips = new List<Relationship>();
+            JArray array = JArray.Parse(result.GetResponseData());
+            foreach (var tkn in array)
+            {
+                Node node = new Node();
+                node.SetLocation(new Uri(tkn["end"].ToString()));
+                if (node.Id == toNode.Id)
+                {
+                    Relationship relationShip = _relationShipRepo.GetRelationship(new Uri(tkn["self"].ToString()));
+                    relationShips.Add(relationShip);
+                }
+            }
+
+            return relationShips;
         }
     }
 }

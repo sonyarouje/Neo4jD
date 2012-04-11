@@ -13,6 +13,11 @@ namespace Net.Graph.Neo4JD.Persistance
         public Relationship GetRelationship(string relationShipId)
         {
             var uri = UriHelper.ConcatUri(GraphEnvironment.GetBaseUri(), "db/data/relationship/" + relationShipId);
+            return this.GetRelationship(uri);
+        }
+
+        public Relationship GetRelationship(Uri uri)
+        {
             var result = _graphRequest.Post(RequestType.GET, uri, null);
             Relationship relationship = new Relationship(result);
             return relationship;

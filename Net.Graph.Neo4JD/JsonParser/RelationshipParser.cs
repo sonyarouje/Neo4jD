@@ -20,6 +20,7 @@ namespace Net.Graph.Neo4JD.JsonParser
             base.JsonToEntity(result, entity);
             JObject jobject = JObject.Parse(base.GetResponseData());
             ((Relationship)entity).SetVertices(jobject["start"].ToString(), jobject["end"].ToString());
+            ((Relationship)entity).SetType(jobject["type"].ToString());
         }
     }
 }

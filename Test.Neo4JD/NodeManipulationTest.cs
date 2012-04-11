@@ -155,5 +155,17 @@ namespace Test.Neo4jClient
                 Console.WriteLine(node.Id.ToString());
         }
 
+        [TestCase]
+        public void GetAllPaths()
+        {
+            Node father = Node.Get(1);
+            Node mother = Node.Get(2);
+
+            IList<Relationship> relationShips = father.GetAllPathsTo(mother);
+            Assert.IsNotNull(relationShips);
+            Assert.AreEqual(1, relationShips.Count);
+            foreach (Relationship relation in relationShips)
+                Assert.AreEqual("wife", relation.GetType());
+        }
     }
 }

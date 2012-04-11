@@ -48,6 +48,16 @@ namespace Net.Graph.Neo4JD
             base.SetLocation(location);
         }
 
+        public void SetType(string type)
+        {
+            this._type = type;
+        }
+
+        public string GetType()
+        {
+            return this._type;
+        }
+
         public override void Delete()
         {
             if (this.GetLocation() == null)

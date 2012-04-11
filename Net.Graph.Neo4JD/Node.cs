@@ -93,6 +93,22 @@ namespace Net.Graph.Neo4JD
             return this.GetRelationshipNodes("out","end");
         }
 
+        private IList<Node> GetRelationshipNodes(string direction, string element)
+        {
+            if (this.GetLocation() == null || this.Id <= 0)
+                throw new Exceptions.InvalidNodeException();
+
+            RequestResult result = _nodeRepo.GetRelatedNodes(this, direction);
+
+            return _nodeRepo.CreateNodeArray(element, result);
+        }
+
+        public IList<Relationship> GetAllPathsTo(Node endNode)
+        {
+            RequestResult result = _nodeRepo.GetRelatedNodes(this, "out");
+            return _nodeRepo.GetAllPathsTo(endNode,result);
+        }
+
         public IList<Node> Filter(INeo4jQuery query)
         {
             RequestResult result=null;
@@ -102,16 +118,6 @@ namespace Net.Graph.Neo4JD
                 result = _nodeRepo.GetGermlinExecutionResult(this,query.ToString());
 
             return _nodeRepo.CreateNodeArray("self", result);
-        }
-
-        private IList<Node> GetRelationshipNodes(string direction, string element)
-        {
-            if (this.GetLocation() == null || this.Id <= 0)
-                throw new Exceptions.InvalidNodeException();
-
-            RequestResult result = _nodeRepo.GetRelatedNodes(this, direction);
-
-            return _nodeRepo.CreateNodeArray(element, result);
         }
     }
 }
