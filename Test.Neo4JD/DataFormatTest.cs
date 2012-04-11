@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NUnit.Core;
 using NUnit.Framework;
 using Newtonsoft.Json.Linq;
 namespace Test.Neo4jClient

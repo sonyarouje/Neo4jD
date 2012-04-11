@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using NUnit.Core;
 using Net.Graph.Neo4JD;
 using Net.Graph.Neo4JD.Exceptions;
 

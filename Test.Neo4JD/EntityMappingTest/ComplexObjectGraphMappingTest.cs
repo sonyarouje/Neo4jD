@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Text;
-using NUnit.Core;
 using NUnit.Framework;
 using Net.Graph.Neo4JD;
 using Net.Graph.Neo4JD.EntityMapper;

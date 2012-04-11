@@ -6,7 +6,6 @@ using Net.Graph.Neo4JD;
 using Net.Graph.Neo4JD.Exceptions;
 using Net.Graph.Neo4JD.EntityMapper;
 using NUnit.Framework;
-using NUnit.Core;
 namespace Test.Neo4jClient
 {
     public class Person
