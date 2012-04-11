@@ -156,7 +156,7 @@ namespace Test.Neo4jClient
         }
 
         [TestCase]
-        public void GetAllPaths()
+        public void Can_Get_All_PathsBetween_Two_Nodes()
         {
             Node father = Node.Get(1);
             Node mother = Node.Get(2);
