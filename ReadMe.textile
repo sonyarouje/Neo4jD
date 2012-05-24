@@ -111,6 +111,9 @@ Let's see how to persist an order
             ModelBuilder.Add(new OrderConfiguration());
             ModelBuilder.Add(new OrderItemConfiguration());
             ModelBuilder.Add(new ProductConfiguration());
+
+            //Add the assemblies to the builder. We should pass Assembly path and Assmebly Name.
+            ModelBuilder.AddAssembly((new System.Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase)).AbsolutePath);
         }
         [TestCase]
         public void SaveObjectGraph()

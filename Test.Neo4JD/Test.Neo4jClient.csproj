@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataFormatTest.cs" />
+    <Compile Include="EntityMappingTest\InheritedEntityTest.cs" />
     <Compile Include="EntityMappingTest\SimpleEntityMapperTest.cs" />
     <Compile Include="EntityMappingTest\ComplexObjectGraphMappingTest.cs" />
     <Compile Include="EntityMappingTest\EntityConfig.cs" />

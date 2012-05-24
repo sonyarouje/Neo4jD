@@ -12,6 +12,11 @@ namespace Net.Graph.Neo4JD.EntityMapper
 {
     public class NodeMapper
     {
+        public NodeMapper()
+        {
+            
+        }
+
         public T Get<T>(int id) where T:class
         { 
             Node node = Node.Get(id);
@@ -20,8 +25,10 @@ namespace Net.Graph.Neo4JD.EntityMapper
 
         private static T Get<T>(Node node) where T:class
         {
-            T entity = LazyLoader.EnableLazyLoading<T>();  //(T)Activator.CreateInstance(typeof(T));
-            if (node.GetProperty("clazz") != typeof(T).ToString())
+            ReflectionHelper refliectionHelper=new ReflectionHelper();
+            T entity = LazyLoader.EnableLazyLoading<T>(); 
+            //if (node.GetProperty("clazz") != typeof(T).ToString())
+            if(refliectionHelper.CanCast(node.GetProperty("clazz"), typeof(T).ToString())==false)
                 throw new InvalidCastException (string.Format("Retrieved object with ID '{0}' is an instance of '{1}' and unable to cast it to '{2}'",node.Id.ToString(), node.GetProperty("clazz"), typeof(T).ToString()));
             typeof(T).GetProperties().Where(pr => pr.CanRead && MapperHelper.IsAnId(pr) == false).ToList().ForEach(property =>
             {
@@ -30,6 +37,20 @@ namespace Net.Graph.Neo4JD.EntityMapper
 
             entity = MapperHelper.SetIdentity<T>(entity, node.Id);
             return entity;
+        }
+
+        private static bool IsInherited<T>(string persistedType, T entity) where T : class
+        {
+
+            Type typ = Type.GetType(persistedType);
+
+            object obj = Activator.CreateInstance(typ);
+            if (typ.IsAssignableFrom(entity.GetType()))
+                return true;
+            else if (entity.GetType().IsAssignableFrom(typ.GetType()))
+                return true;
+            else
+                return false;
         }
 
         public void Delete<T>(T entity) where T : class
