@@ -85,7 +85,7 @@ namespace Test.Neo4jClient.EntityMappingTest
 
             Assert.IsNotNull(myClaz);
             Assert.AreEqual(29, myClaz.Id);
-            Console.WriteLine(myClaz.SelectedPerson.Id);
+            Assert.AreEqual(30, myClaz.SelectedPerson.Id);
         }
     }
 }
