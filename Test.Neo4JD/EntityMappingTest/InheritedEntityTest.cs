@@ -82,10 +82,11 @@ namespace Test.Neo4jClient.EntityMappingTest
         {
             NodeMapper nodeMapper = new NodeMapper();
             MyClass myClaz = nodeMapper.Get<MyClass>(29);
-
+            Manager manager = (Manager)myClaz.SelectedPerson;
             Assert.IsNotNull(myClaz);
+            Assert.IsNotNull(manager);
             Assert.AreEqual(29, myClaz.Id);
-            Assert.AreEqual(30, myClaz.SelectedPerson.Id);
+            Assert.AreEqual("Neo4jD", manager.OfficeName);
         }
     }
 }

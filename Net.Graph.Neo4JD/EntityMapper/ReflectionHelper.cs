@@ -39,5 +39,10 @@ namespace Net.Graph.Neo4JD.EntityMapper
 
             return typ;
         }
+
+        public object InvokePrivateStaticGenericMethod(object obj, string methodName, Type genericType, object[] args)
+        {
+            return obj.GetType().GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic).MakeGenericMethod(genericType).Invoke(null, args);
+        }
     }
 }
