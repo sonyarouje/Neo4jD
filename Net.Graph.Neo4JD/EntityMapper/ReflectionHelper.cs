@@ -40,9 +40,35 @@ namespace Net.Graph.Neo4JD.EntityMapper
             return typ;
         }
 
+        public object GetInstance(Type type)
+        {
+            return Activator.CreateInstance(this.ReturnInstance(type.ToString()));
+        }
+
         public object InvokePrivateStaticGenericMethod(object obj, string methodName, Type genericType, object[] args)
         {
             return obj.GetType().GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic).MakeGenericMethod(genericType).Invoke(null, args);
+        }
+
+        public object CloneProperties(object origin, object destination)
+        {
+            if (destination == null) throw new ArgumentNullException("Destination object is null.");
+            if (origin == null) throw new ArgumentNullException("Origin object is null");
+            foreach (var destinationProperty in destination.GetType().GetProperties())
+            {
+                if (destinationProperty.CanWrite)
+                {
+                    foreach (var originProperty in origin.GetType().GetProperties())
+                    {
+                        if (originProperty.CanRead && (originProperty.Name == destinationProperty.Name && originProperty.PropertyType == destinationProperty.PropertyType))
+                        {
+                            destinationProperty.SetValue(destination, originProperty.GetValue(origin, null), null);
+                        }
+                    }
+                }
+            }
+
+            return destination;
         }
     }
 }

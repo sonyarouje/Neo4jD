@@ -95,8 +95,10 @@ namespace Net.Graph.Neo4JD.EntityMapper
                 MapperHelper.SetIdentity(entity, node.Id);
             }
             else
+            {
                 node = Node.Get(id);
-
+                this.UpdateNode(node, entity);
+            }
             return node;
         }
 
@@ -113,6 +115,20 @@ namespace Net.Graph.Neo4JD.EntityMapper
             return node;
         }
 
-
+        private void UpdateNode(Node nodeToUpdate, object entity)
+        {
+            string propVal = string.Empty;
+            entity.GetType().GetProperties().Where(pr => pr.CanRead && MapperHelper.IsAnId(pr) == false).ToList().ForEach(property =>
+            {
+                if (MapperHelper.IsPrimitive(property.PropertyType))
+                {
+                    propVal=property.GetValue(entity, null).ToString();
+                    if (nodeToUpdate.GetProperty(property.Name) != propVal)
+                    {
+                        nodeToUpdate.SetProperty(property.Name, propVal);
+                    }
+                }
+            });
+        }
     }
 }

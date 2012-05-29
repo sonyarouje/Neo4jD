@@ -56,6 +56,7 @@
     <Compile Include="EntityMapper\MapperHelper.cs" />
     <Compile Include="EntityMapper\ModelBuilder.cs" />
     <Compile Include="EntityMapper\NodeMapper.cs" />
+    <Compile Include="EntityMapper\ProxyCloner.cs" />
     <Compile Include="EntityMapper\ReflectionHelper.cs" />
     <Compile Include="EntityMapper\RelationshipCreateHelper.cs" />
     <Compile Include="Exceptions\InvalidNodeException.cs" />

@@ -64,7 +64,10 @@ namespace Net.Graph.Neo4JD
         /// <returns></returns>
         public BaseEntity AddProperty(string propertyName, string propertyValue)
         {
-            this._keyValuePair.Add(propertyName, propertyValue);
+            if (this._keyValuePair.ContainsKey(propertyName))
+                this._keyValuePair[propertyName] = propertyValue;
+            else
+                this._keyValuePair.Add(propertyName, propertyValue);
             return this;
         }
 

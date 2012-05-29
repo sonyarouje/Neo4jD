@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using Castle.DynamicProxy;
 namespace Net.Graph.Neo4JD.EntityMapper
 {
     internal class ParentChildGlue
@@ -43,8 +44,9 @@ namespace Net.Graph.Neo4JD.EntityMapper
             _nodeMapper = nodeMapper;
         }
 
-        public object SaveNodeWithRelationShip(object entity)
+        public object SaveNodeWithRelationShip(object proxy)
         {
+            object entity = ProxyCloner.ConvertProxyToEntity(proxy);
             ParentChildGlue parentRelation = new ParentChildGlue(null, entity, string.Empty);
             _toWalk.Push(parentRelation);
             PersistObjectGraphWithRelationship(_toWalk.Pop());
@@ -103,9 +105,12 @@ namespace Net.Graph.Neo4JD.EntityMapper
                     Schedule(item, parent, memberName);
             else
             {
-                ParentChildGlue parentRelation = new ParentChildGlue(parent, toSchedule, memberName);
+                object entityToSchedule = ProxyCloner.ConvertProxyToEntity(toSchedule);
+                ParentChildGlue parentRelation = new ParentChildGlue(parent, entityToSchedule, memberName);
                 _toWalk.Push(parentRelation);
             }
         }
+
+        
     }
 }
