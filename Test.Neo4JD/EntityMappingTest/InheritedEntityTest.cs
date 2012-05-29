@@ -96,9 +96,14 @@ namespace Test.Neo4jClient.EntityMappingTest
             MyClass myClaz = nodeMapper.Get<MyClass>(29);
             Console.WriteLine("Get_MyClassEntity_And_Update_Manager: " +  myClaz.GetType().ToString());
             Manager manager = (Manager)myClaz.SelectedPerson;
-            manager.OfficeName = "Sony Arouje";
+            manager.OfficeName = "Product Development";
             myClaz.SelectedPerson = manager;
             nodeMapper.Save<MyClass>(myClaz);
+
+
+            MyClass myClazTmp = nodeMapper.Get<MyClass>(29);
+            Manager managerTmp = (Manager)myClaz.SelectedPerson;
+            Assert.AreEqual("Product Development", manager.OfficeName);
         }
     }
 }

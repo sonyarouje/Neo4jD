@@ -57,15 +57,7 @@ namespace Net.Graph.Neo4JD.EntityMapper
             foreach (var destinationProperty in destination.GetType().GetProperties())
             {
                 if (destinationProperty.CanWrite)
-                {
-                    foreach (var originProperty in origin.GetType().GetProperties())
-                    {
-                        if (originProperty.CanRead && (originProperty.Name == destinationProperty.Name && originProperty.PropertyType == destinationProperty.PropertyType))
-                        {
-                            destinationProperty.SetValue(destination, originProperty.GetValue(origin, null), null);
-                        }
-                    }
-                }
+                    destinationProperty.SetValue(destination, origin.GetType().GetProperty(destinationProperty.Name).GetValue(origin, null), null);
             }
 
             return destination;
