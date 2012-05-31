@@ -28,17 +28,13 @@ namespace Net.Graph.Neo4JD.EntityMapper
 
         private static bool IsAProxyObject(object proxy)
         {
-            if ((proxy as IProxyTargetAccessor).DynProxyGetTarget().GetType() == null)
+            if (proxy is IProxyTargetAccessor == false)
+                return false;
+            else if ((proxy as IProxyTargetAccessor).DynProxyGetTarget().GetType() == null)
                 return false;
             else
-            {
-                Console.WriteLine("ProxyCloner: " + (proxy as IProxyTargetAccessor).DynProxyGetTarget().GetType().BaseType.ToString());
                 return true;
-            }
         }
-
-
-
 
     }
 }
